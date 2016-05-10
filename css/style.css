@@ -1,0 +1,102 @@
+@charset "UTF-8";
+/* CSS Document */
+@import url(https://fonts.googleapis.com/css?family=Arimo);
+@import url(../css/animate.css);
+
+body{
+	background-color: #ed1c24;
+	font-family: 'Arimo', sans-serif;
+	}
+
+#main {
+	background-image: url(../assets/background-map-trans.png);
+	background-repeat:no-repeat;
+	width: 801px;
+	height: 700px;
+	margin: auto;
+	}
+	
+#header {
+	width: 175px;
+	color: #fff;
+	text-align: justify;
+	margin: 0 0 0 150px;
+	}
+#header p {
+	font-size: 11px;
+	line-height: 1.5em;
+	margin-top: 0px;
+	}
+	
+	
+/** Text **/
+
+h1 {
+	color: #fff;
+	font-size: 42px;
+	font-weight: 700;
+	margin-bottom: 0px;
+	}
+	
+h1 span {
+	font-size: 55px;
+	}
+	
+	
+/** Icons **/
+.canlubang-icon {
+	background-image:url(../assets/icon.png);
+	background-repeat:no-repeat;
+	width: 55px;
+	height: 55px;
+	margin: auto;
+	margin-right: 210px;
+	position: relative;
+	color:#39b54a;
+	cursor: pointer; 
+	cursor: hand;
+	}
+	
+.canlubang-icon:hover .tip {
+	opacity: 1;
+	animation-name: fadeIn;
+	-webkit-animation-name: fadeIn;	
+	animation-duration: 1s;	
+	-webkit-animation-duration: 1s;
+	animation-timing-function: ease-in-out;	
+	-webkit-animation-timing-function: ease-in-out;		
+	visibility: visible !important;	
+	
+	}
+.bacolod-icon {
+	background-image:url(../assets/icon.png);
+	background-repeat:no-repeat;
+	width: 55px;
+	height: 55px;
+	margin: auto;
+	margin-right: 150px;
+	margin-top: 100px;
+	}
+	
+/** Tooltip **/
+.tip {
+	width: 270px;
+	left: -300px;
+	top: -20px;
+	position: absolute;
+	padding: 10px 0 0 10px;
+	font-size: 25px;
+	color: #ed1c24;
+	background-color: #fff;
+	height: 110px;
+	-webkit-box-shadow: 7px 6px 5px -1px rgba(0,0,0,0.29);
+	-moz-box-shadow: 7px 6px 5px -1px rgba(0,0,0,0.29);
+	box-shadow: 7px 6px 5px -1px rgba(0,0,0,0.29);
+	opacity: 0;
+	}
+.tip img {
+	margin-top: 5px;
+	}
+
+
+
