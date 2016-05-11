@@ -8,15 +8,15 @@ use \core\router,
 // Router::any('', '\controllers\welcome@index');
 // Router::any('/subpage', '\controllers\welcome@subpage');
 
-// //if no route found
-// Router::error('\core\error@index');
-
 // //turn on old style routing
 // Router::$fallback = false;
 
+Router::any('edit', '\controllers\Location@edit');
 Router::any('', '\controllers\Page@index');
 
 
+// //if no route found
+Router::error('\core\error@index');
 
 // //execute matched routes
 Router::dispatch();
