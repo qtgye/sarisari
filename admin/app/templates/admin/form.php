@@ -1,4 +1,4 @@
-<form class="row">
+<form class="row" action="">
 
   <div class="col s6">
 
