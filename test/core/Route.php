@@ -16,17 +16,17 @@ class Route
 
 
 	/**
-	 * The request uri segments
-	 * @var array
-	 */
-	private $uri_array;
-
-
-	/**
 	 * Array of registered routes
 	 * @var array
 	 */
 	private $routes = array();
+
+
+	/**
+	 * Type of current request method
+	 * @var string
+	 */
+	private $request_method = array();
 	
 
 	/**
@@ -55,6 +55,7 @@ class Route
 		$controller_method = explode('@', $controller_method);
 		$controller = $controller_method[0];
 		$method = !empty($controller_method[1]) ? $controller_method[1] : 'index';
+		$pattern = trim(ROUTE_PREFIX,'/') .'/'. trim($pattern,'/');
 
 		$this->routes[$pattern] = compact('request_method','pattern','controller','method');
 	}
@@ -68,37 +69,35 @@ class Route
 	 */
 	public function get($pattern,$controller_method = '')
 	{
-		$this->register_route( trim($pattern,'/'), $controller_method );
+		$this->register_route( $pattern, $controller_method );
 	}
 
 
 	/**
 	 * Runs the controller method for a specified route
-	 * @param  object $route Registered route
+	 * @param  object $registerd_route Registered route
 	 * @return void 
 	 */
-	private function execute_controller($route)
-	{
-		$controller_file = dirname(dirname(__FILE__)) .'/controllers/'. $route['controller'] . '.php';
+	private function execute_controller($registerd_route)
+	{		
+		$controller_file = dirname(dirname(__FILE__)) .'/controllers/'. $registerd_route['controller'] . '.php';
 
-		// var_dump(dirname(dirname(__FILE__)) .'/controllers/'. $controller . '.php');
-
-		try {
+		if ( is_readable($controller_file) ) {
 			require_once($controller_file);
-		} catch (Exception $e) {
+		} else {
 			Log::append('The file <strong>' . $controller_file . '</strong> does not exist.'); exit();
 		}
 
-		if ( !class_exists($route['controller']) ) {
-			Log::append('The Controller file for <strong>'.$route['controller'].'</strong> does not exist.'); exit();
+		if ( !class_exists($registerd_route['controller']) ) {
+			Log::append('The Controller file for <strong>'.$registerd_route['controller'].'</strong> does not exist.'); exit();
 		}
 
-		if ( !method_exists($route['controller'], $route['method']) ) {
-			Log::append('<strong>'.$route['method'].'</strong> is not a method of class <strong>'.$route['controller'].'</strong>'); exit();
+		if ( !method_exists($registerd_route['controller'], $registerd_route['method']) ) {
+			Log::append('<strong>'.$registerd_route['method'].'</strong> is not a method of class <strong>'.$registerd_route['controller'].'</strong>'); exit();
 		}
 
-		$controller = new $route['controller'];
-		call_user_method($route['method'], $controller);
+		$controller = new $registerd_route['controller'];
+		call_user_method($registerd_route['method'], $controller);
 	}
 
 

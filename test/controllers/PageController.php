@@ -3,7 +3,7 @@
 /**
 * Page Controller
 */
-class PageController
+class PageController extends Controller
 {
 
 	
@@ -14,6 +14,9 @@ class PageController
 
 	public function index()
 	{
-		View::render('index');
+		View::render('index',array(
+			'test' => 'one',
+			'two' => 2
+		));
 	}
 }

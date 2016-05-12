@@ -14,7 +14,6 @@ class View
 
 	public static function render( $view_path, $data = array() )
 	{
-
 		if ( is_array($data) ) {
 			extract($data);
 		}		
