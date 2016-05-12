@@ -2,9 +2,10 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width:device-width,initial-scale:1.0">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <title>Sari-Sari Stories</title>
-    <link href="<?php echo app_path('css/public/main.css') ?>" rel="stylesheet">
+    <link href="/css/public/main.css" rel="stylesheet">
+    <link href="/vendor/custom-popover/css/popover.css" rel="stylesheet">
 </head>
 
 <body>
@@ -28,7 +29,7 @@
                             <?php foreach (range(0,2) as $photo): ?>
                                 <div class="popover-photo-image">
                                     <div class="popover-photo-ratio">
-                                         <img src="http://www.lorempixel.com/120/120/city" alt="">
+                                        <img class="js-popover" data-popover-group="<?php echo $location->name ?>" src="http://www.lorempixel.com/250/250/city" alt="">
                                     </div>                                   
                                 </div>                                
                             <?php endforeach ?>
@@ -40,6 +41,8 @@
     </div>
 </div>
 
+<script src="/vendor/custom-popover/js/popover.js"></script>
+<script src="/js/app.js"></script>
 
 </body>
 </html>
