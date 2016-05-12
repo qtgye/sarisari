@@ -12,6 +12,7 @@ $files = array(
 
 	// OTHER FILES
 	'routes',
+	'helpers/functions',
 
 );
 

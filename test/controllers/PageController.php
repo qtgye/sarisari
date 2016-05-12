@@ -14,9 +14,6 @@ class PageController extends Controller
 
 	public function index()
 	{
-		View::render('index',array(
-			'test' => 'one',
-			'two' => 2
-		));
+		View::render('public/index');
 	}
 }

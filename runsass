@@ -1,1 +1,2 @@
-sass --watch --style=compressed --sourcemap=auto sass:css &
+sass --watch --style=compressed --sourcemap=auto sass/public:css/public &
+sass --watch --style=compressed --sourcemap=auto sass/admin:css/admin &

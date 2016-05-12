@@ -35,7 +35,7 @@ class Route
 	function __construct()
 	{
 		$this->request_uri 	= trim(preg_replace('/[?].*$/', '', $_SERVER['REQUEST_URI']),'/');
-		$this->request_method 	= trim(preg_replace('/[?].*$/', '', $_SERVER['REQUEST_METHOD']),'/');
+		$this->request_method 	= $_SERVER['REQUEST_METHOD'];
 	}
 
 
@@ -55,7 +55,8 @@ class Route
 		$controller_method = explode('@', $controller_method);
 		$controller = $controller_method[0];
 		$method = !empty($controller_method[1]) ? $controller_method[1] : 'index';
-		$pattern = trim(ROUTE_PREFIX,'/') .'/'. trim($pattern,'/');
+		$pattern = rtrim(ROUTE_PREFIX,'/') .'/'. ltrim($pattern,'/');
+		$pattern = trim($pattern,'/');
 
 		$this->routes[$pattern] = compact('request_method','pattern','controller','method');
 	}
@@ -111,7 +112,7 @@ class Route
 		if ( array_key_exists($this->request_uri, $this->routes) ) {
 			// verify request method
 			if ( strtolower($this->request_method) == $this->routes[$this->request_uri]['request_method'] ) {
-				$this->execute_controller(&$this->routes[$this->request_uri]);
+				$this->execute_controller(&$this->routes[$this->request_uri]);				
 			}			
 		}
 	}

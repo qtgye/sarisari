@@ -1,3 +1,3 @@
 <?php 
 
-$route->get('nah/haha','PageController@index');
+$route->get('/','PageController@index');

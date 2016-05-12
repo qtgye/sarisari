@@ -1,7 +1,7 @@
 @charset "UTF-8";
 /* CSS Document */
 @import url(https://fonts.googleapis.com/css?family=Arimo);
-@import url(../css/animate.css);
+@import url(/css/animate.css);
 
 body{
 	background-color: #ed1c24;
@@ -9,11 +9,10 @@ body{
 	}
 
 #main {
-	background-image: url(../assets/background-map-trans.png);
-	background-repeat:no-repeat;
 	width: 801px;
 	height: 700px;
 	margin: auto;
+	position: relative;
 	}
 	
 #header {
@@ -45,7 +44,7 @@ h1 span {
 	
 /** Icons **/
 .canlubang-icon {
-	background-image:url(../assets/icon.png);
+	background-image:url(/assets/icon.png);
 	background-repeat:no-repeat;
 	width: 55px;
 	height: 55px;
@@ -69,7 +68,7 @@ h1 span {
 	
 	}
 .bacolod-icon {
-	background-image:url(../assets/icon.png);
+	background-image:url(/assets/icon.png);
 	background-repeat:no-repeat;
 	width: 55px;
 	height: 55px;
