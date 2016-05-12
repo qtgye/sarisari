@@ -1,4 +1,5 @@
 <?php
+
 if(file_exists('vendor/autoload.php')){
 	require 'vendor/autoload.php';
 } else {
@@ -57,6 +58,6 @@ if (defined('ENVIRONMENT')){
 }
 
 //initiate config
-new \core\config();
+// new \core\config();
 
-include 'app/routes.php';
+// include 'app/routes.php';

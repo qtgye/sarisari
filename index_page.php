@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Sari-Sari Stories</title>
-<link href="css/style.css" rel="stylesheet" type="text/css">
+<link href="css/main.css" rel="stylesheet" type="text/css">
 </head>
 
 <body>
