@@ -29,4 +29,4 @@ error_reporting(1);
  * e.g., www.domain.com/base/folder/
  * define('ROUTE_PREFIX', 'base/folder/');
  */
-define('ROUTE_PREFIX', 'test');
+define('ROUTE_PREFIX', '');
