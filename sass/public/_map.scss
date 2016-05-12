@@ -1,8 +1,9 @@
 .map {
 	position: absolute;
+	display: inline-block;
 	font-size: 0px;
 	top: 0;
-	left: 0;
+	right: 0;
 }
 
 
@@ -17,4 +18,25 @@
 	left: 0;
 	width: 100%;
 	height: 100%;
+}
+
+
+.marker {
+	position: absolute;
+	width: (100% * 52 / 531); // original psd sizes
+	height: auto;
+	transform: translate(-50%,-50%);
+	cursor: pointer;
+
+	&:after {
+		content: '';
+		display: block;
+		position: relative;
+		width: 100%;
+		height: 0;
+		padding-top: 100%;
+		background-image: url(/assets/marker.png);
+		background-size: cover;
+		transform: translateZ(0);
+	}
 }

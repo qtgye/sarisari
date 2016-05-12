@@ -1,0 +1,32 @@
+[
+	{
+		"name" 	: "canlubang",
+		"title"	: "Canlubang",
+		"x" 	: 246,
+		"y"		: 375
+	},
+	{
+		"name" 	: "bacolod",
+		"title"	: "Bacolod",
+		"x" 	: 345,
+		"y"		: 558
+	},
+	{
+		"name" 	: "cebu",
+		"title"	: "Cebu",
+		"x" 	: 390,
+		"y"		: 585
+	},
+	{
+		"name" 	: "misamis",
+		"title"	: "Misamis",
+		"x" 	: 432,
+		"y"		: 683
+	},
+	{
+		"name" 	: "davao",
+		"title" : "Davao",
+		"x" 	: 483,
+		"y"		: 737
+	}
+]
