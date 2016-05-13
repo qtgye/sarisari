@@ -4,13 +4,14 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "autoprefixer": "postcss -u autoprefixer --autoprefixer.browsers 'last 2 versions, ie > 9' -r css/*",
+    "autoprefixer-admin": "postcss -u autoprefixer --autoprefixer.browsers 'last 2 versions, ie > 9' -r css/admin/main.css",
+    "autoprefixer-public": "postcss -u autoprefixer --autoprefixer.browsers 'last 2 versions, ie > 9' -r css/public/main.css",
     "scss-admin": "node-sass --output-style compressed -o css/admin sass/admin/main.scss",
     "scss-public": "node-sass --output-style compressed -o css/public sass/public/main.scss",
-    "build:css-admin": "npm run scss-admin && npm run autoprefixer",
-    "build:css-public": "npm run scss-public && npm run autoprefixer",
+    "build:css-admin": "npm run scss-admin && npm run autoprefixer-admin",
+    "build:css-public": "npm run scss-public && npm run autoprefixer-public",
     "build": "npm run build:css-public & npm run build:css-admin",
-    "watch:css": "onchange 'sass/admin/**/*.scss' -- npm run build:css-admin & onchange 'sass/public/**/*.scss' -- npm run build:css-pubic",
+    "watch:css": "onchange 'sass/admin/**/*.scss' -- npm run build:css-admin & onchange 'sass/public/**/*.scss' -- npm run build:css-public",
     "watch": "npm-run-all -p watch:css",
     "postinstall": "npm run build"
   },
