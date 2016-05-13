@@ -40,10 +40,13 @@
 
         var template = '<div class="js-image-popup-modal">' + 
                             '<div class="popup-overlay"></div>' + 
+                            '<div class="popup-close">RETURN TO MAP <span class="popup-close-icon"></span></div>' + 
                             '<div class="popup-dialog">' + 
                                 '<span class="popup-arrow left">&lt;</span>'+
                                 '<span class="popup-arrow right">&gt;</span>'+
-                                '<div class="popup-content">'+ 
+                                '<div class="popup-content">'+                                     
+                                '</div>' + 
+                                '<div class="popup-info">'+ 
                                 '</div>' + 
                             '</div>' + 
                         '</div>',
@@ -57,6 +60,8 @@
             overlay : modalElement.getElementsByClassName('popup-overlay')[0],
             dialog : modalElement.getElementsByClassName('popup-dialog')[0],
             content : modalElement.getElementsByClassName('popup-content')[0],
+            info : modalElement.getElementsByClassName('popup-info')[0],
+            close : modalElement.getElementsByClassName('popup-close')[0],
             arrows : {
                 previous : modalElement.getElementsByClassName('popup-arrow left')[0],
                 next : modalElement.getElementsByClassName('popup-arrow right')[0]
@@ -111,6 +116,7 @@
         // BINDS
 
         _modal.DOM.overlay.addEventListener('click',_modal.hide,false);
+        _modal.DOM.close.addEventListener('click',_modal.hide,false);
 
 
         return _modal;
@@ -268,8 +274,8 @@
                     img.parentElement.removeChild(img);                    
                     Modal.DOM.content.appendChild(newImage);
                     newImage.style.opacity = 1;
-                    if ( item.onActive ) {
-                        item.onActive(item,_group,Modal);
+                    if ( item.events.onActive ) {
+                        item.events.onActive(item,Modal);
                     }
                 },300);
             }

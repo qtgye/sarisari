@@ -29,4 +29,9 @@ error_reporting(1);
  * e.g., www.domain.com/base/folder/
  * define('ROUTE_PREFIX', 'base/folder/');
  */
+
+// greenlemon
+// define('ROUTE_PREFIX', 'projects/sari-sari/');
+
+// local
 define('ROUTE_PREFIX', '');

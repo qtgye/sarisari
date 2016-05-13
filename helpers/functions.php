@@ -2,7 +2,12 @@
 
 function app_path($path)
 {
-	return '/'.ltrim($path,'/');
+	$full_path = '/';
+	if ( defined('ROUTE_PREFIX') && ROUTE_PREFIX != '' ) {
+		$full_path .= trim(ROUTE_PREFIX,'/') . '/';		
+	}
+	$full_path .= trim($path,'/');
+	return $full_path;
 }
 
 function model($model_name,$params = array())

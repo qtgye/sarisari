@@ -10,9 +10,9 @@
 	pointer-events: none;
 	z-index: 200;
 	background-color: #fff;
-	padding: 20px;
+	padding: 15px;
 	box-sizing: border-box;
-	// box-shadow: 10px 10px 10px rgba(0,0,0,0.5);
+	filter: drop-shadow(10px 10px 10px rgba(0,0,0,0.5));
 	transition: opacity 0.3s ease,
 				visibility 0.3s ease,
 				transform 0.3s ease;
@@ -41,7 +41,9 @@
 
 	h2 {
 		font-size: 1.8rem;
-		margin-top: 0;
+		text-transform: uppercase;
+		margin: 0 0 5px 0;
+		color: red;
 	}
 }
 
@@ -54,12 +56,12 @@
 
 .popover-photo-image {
 	display: inline-block;
-	width: 30%;	
+	width: 32%;
 }
 
 .popover-photo-ratio {
 	width: 100%;
-	padding-top: 100%;
+	padding-top: 75%;
 	position: relative;
 	overflow: hidden;
 

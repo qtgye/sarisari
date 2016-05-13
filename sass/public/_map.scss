@@ -24,9 +24,9 @@
 .marker {
 	position: absolute;
 	width: (100% * 52 / 531); // original psd sizes
-	height: auto;
-	transform: translate(-50%,-50%);
+	height: auto;	
 	cursor: pointer;
+	transform: translateX(-50%) translateY(-50%) translateZ(0);
 
 	&:after {
 		content: '';
@@ -37,6 +37,6 @@
 		padding-top: 100%;
 		background-image: url(/assets/marker.png);
 		background-size: cover;
-		transform: translateZ(0);
+		
 	}
 }

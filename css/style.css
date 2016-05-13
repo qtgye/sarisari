@@ -1,0 +1,230 @@
+@charset "UTF-8";
+/* CSS Document */
+@import url(https://fonts.googleapis.com/css?family=Arimo);
+@import url(../css/animate.css);
+
+body{
+	background-color: #ed1c24;
+	font-family: 'Arimo', sans-serif;
+	}
+
+#main {
+	background-image: url(../assets/background-map-trans.png);
+	background-repeat:no-repeat;
+	width: 801px;
+	height: 700px;
+	margin: auto;
+	}
+	
+#header {
+	width: 175px;
+	color: #fff;
+	text-align: justify;
+	margin: 0 0 0 150px;
+	}
+#header p {
+	font-size: 11px;
+	line-height: 1.5em;
+	margin-top: 0px;
+	}
+	
+	
+/** Text **/
+
+h1 {
+	color: #fff;
+	font-size: 42px;
+	font-weight: 700;
+	margin-bottom: 0px;
+	}
+	
+h1 span {
+	font-size: 55px;
+	}
+	
+	
+/** Icons **/
+.canlubang-icon {
+	background-image:url(../assets/icon.png);
+	background-repeat:no-repeat;
+	width: 55px;
+	height: 55px;
+	margin: auto;
+	margin-top: 30px;
+	margin-right: 200px;
+	position: relative;
+	color:#39b54a;
+	cursor: pointer; 
+	cursor: hand;
+	position: relative;
+	background-size: 220px;
+	}
+	
+.canlubang-icon:hover .tip {
+	opacity: 1;
+	}
+.bacolod-icon {
+	background-image:url(../assets/icon.png);
+	background-repeat:no-repeat;
+	width: 55px;
+	height: 55px;
+	margin: auto;
+	margin-right: 130px;
+	margin-top: 80px;
+	z-index: 10;
+	cursor: pointer; 
+	cursor: hand;
+	position: relative;
+	background-size: 220px;
+	}
+.bacolod-icon:hover .tip-bacolod {
+	opacity: 1;
+	}
+	
+.cebu-icon {
+	background-image:url(../assets/icon.png);
+	background-repeat:no-repeat;
+	width: 55px;
+	height: 55px;
+	margin: auto;
+	margin-right: 100px;
+	margin-top:  -30px;
+	z-index: 10;
+	cursor: pointer; 
+	cursor: hand;
+	position: relative;
+	background-size: 220px;
+	}
+.cebu-icon:hover .tip-cebu {
+	opacity: 1;
+	}
+	
+.misamis {
+	background-image:url(../assets/icon.png);
+	background-repeat:no-repeat;
+	width: 55px;
+	height: 55px;
+	margin: auto;
+	margin-right: 70px;
+	margin-top:  20px;
+	z-index: 10;
+	cursor: pointer; 
+	cursor: hand;
+	position: relative;
+	background-size: 220px;
+	}
+.misamis:hover .tip-misamis {
+	opacity: 1;
+	}
+.davao {
+	background-image:url(../assets/icon.png);
+	background-repeat:no-repeat;
+	width: 55px;
+	height: 55px;
+	margin: auto;
+	margin-right: 30px;
+	margin-top:  -20px;
+	z-index: 10;
+	cursor: pointer; 
+	cursor: hand;
+	position: relative;
+	background-size: 220px;
+	}
+.davao:hover .tip-davao {
+	opacity: 1;
+	}
+	
+/** Tooltip **/
+.tip, .tip-bacolod, .tip-cebu, .tip-misamis, .tip-davao {
+	width: 325px;
+	left: -350px;
+	top: -20px;
+	position: absolute;
+	padding: 10px 0 0 10px;
+	font-size: 25px;
+	color: #ed1c24;
+	background-color: #fff;
+	height: 110px;
+	-webkit-box-shadow: 7px 6px 5px -1px rgba(0,0,0,0.29);
+	-moz-box-shadow: 7px 6px 5px -1px rgba(0,0,0,0.29);
+	box-shadow: 7px 6px 5px -1px rgba(0,0,0,0.29);
+	opacity: 0;
+	}
+.tip, .tip-bacolod, .tip-cebu, .tip-misamis, .tip-davao img {
+	margin-top: 5px;
+	}
+	
+
+/** Popup **/
+.overlay {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.7);
+  transition: opacity 500ms;
+  visibility: hidden;
+  opacity: 0;
+  z-index: -20;
+}
+.overlay:target {
+  visibility: visible;
+  opacity: 1;
+  z-index: 20;
+  
+  
+}
+
+.popup {
+  margin: 150px auto;
+  padding: 20px;
+  background: #fff;
+  width: 500px;
+  position: relative;
+  transition: all 5s ease-in-out;
+  font-size: 12px;
+  
+}
+
+
+.popup .close {
+  position: absolute;
+  top: -70px;
+  right: -50px;
+  transition: all 200ms;
+  font-size: 20px;
+  font-weight: bold;
+  text-decoration: none;
+  color: #fff;
+}
+
+.popup .content {
+  max-height: 30%;
+  overflow: auto;
+}
+
+.popup h1 {
+	margin: 5px 0 0 0;
+	color: red;
+	font-size: 20px;
+}
+
+.popup h2 {
+  margin: 0 0 5px 0;
+  color: #333;
+  font-size: 15px;
+  font-weight: bold;
+}
+
+.left-content {
+	float: left;
+	width: 200px;
+	}
+
+.right-content {
+	margin-top: 10px;
+	font-size: 11px;
+	}
+
+
