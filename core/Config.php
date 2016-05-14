@@ -19,6 +19,7 @@ define('CORE_PATH', dirname(__FILE__));
 // ERROR REPORTING
 error_reporting(1);
 
+
 /**
  * ROUTE_PREFIX
  * 
@@ -35,3 +36,16 @@ error_reporting(1);
 
 // local
 define('ROUTE_PREFIX', '');
+
+
+/**
+ * DATABASE CONFIG
+ */
+
+// local
+define('DB_HOST','localhost');
+define('DB_USER','root');
+define('DB_PASSWORD','');
+define('DB_NAME','sarisari');
+
+
