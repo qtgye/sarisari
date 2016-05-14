@@ -5,7 +5,12 @@ Options -Indexes
  	Options -Indexes
 
 	RewriteEngine On
+
+	# Local
 	RewriteBase /
+
+	# Green Lemon
+	# RewriteBase /projects/sari-sari/
 
 	# Force to exclude the trailing slash
 	RewriteCond %{REQUEST_FILENAME} !-d

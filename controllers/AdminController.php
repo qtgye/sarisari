@@ -17,4 +17,13 @@ class AdminController extends Controller
 	{
 		View::render('admin/page',$this->data);
 	}
+
+	public function add()
+	{
+		$this->data['page'] = 'form';
+		$this->data['method'] = 'add';
+		$this->data['heading'] = 'New Location';
+
+		View::render('admin/page',$this->data);
+	}
 }
