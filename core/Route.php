@@ -70,7 +70,18 @@ class Route
 	 */
 	public function get($pattern,$controller_method = '')
 	{
-		$this->register_route( $pattern, $controller_method );
+		$this->register_route( $pattern, $controller_method, 'get' );
+	}
+
+	/**
+	 * match a post request
+	 * @param  string $pattern the uri pattern
+	 * @param  string $controller_method Controller@method
+	 * @return void 
+	 */
+	public function post($pattern,$controller_method = '')
+	{
+		$this->register_route( $pattern, $controller_method, 'post' );
 	}
 
 

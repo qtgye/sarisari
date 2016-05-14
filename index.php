@@ -9,6 +9,7 @@ $files = array(
 	'core/Input',
 	'core/View',
 	'core/Controller',
+	'core/Model',
 
 	// OTHER FILES
 	'routes',

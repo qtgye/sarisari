@@ -1,4 +1,4 @@
-<form class="row" action="">
+<form class="row" action="<?= app_path('/api/create') ?>">
 
   <?php if ( isset($heading) ): ?>
     <div class="row">
@@ -9,18 +9,19 @@
   <?php endif ?> 
 
   <div class="row">
+
     <div class="col s6">
       <div class="row">
         <div class="input-field col s12">
-          <input id="name" type="text" class="validate">
+          <input id="name" type="text" class="validate" value="<?= isset($name) ? $name : '' ?>">
           <label for="name">Location Name</label>
         </div>
       </div>
 
       <div class="row">      
         <div class="col s12"><label for="">Coordinates</label></div>
-        <div class="col s6"><input disabled value="" id="coord_x" type="text" class="validate col s12"></div>
-        <div class="col s6"><input disabled value="" id="coord_y" type="text" class="validate col s12"></div>
+        <div class="col s6"><input disabled value="" id="coord_x" type="text" class="validate col s12" value="<?= isset($x) ? $x : '' ?>"></div>
+        <div class="col s6"><input disabled value="" id="coord_y" type="text" class="validate col s12" value="<?= isset($y) ? $y : '' ?>"></div>
         <div class="col s12">
           <small class="grey-text">X and Y coordinates are percentage values relative to width/height of the map</small>
         </div>
@@ -32,6 +33,15 @@
         </div>
       </div>
     </div>
+
+    <div class="col s6">
+      <div class="row">
+        <div class="btn red right">
+          <i class="fa fa-save fa-lg"></i>
+        </div>
+      </div>
+    </div>
+
   </div>
 
 

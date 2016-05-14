@@ -1,5 +1,7 @@
 <?php 
 
+require_once(APP_PATH . '/models/Location.php');
+
 /**
 * Page Controller
 */
@@ -27,11 +29,11 @@ class PageController extends Controller
 		$this->locations = array();
 		foreach ($locations as $location) {
 			$params = array(
-						$location->name,
-						$location->title,
-						$location->x,
-						$location->y);
-			array_push($this->locations, model('Location',$params));
+						'name' => $location->name,
+						'title' => $location->title,
+						'x' => $location->x,
+						'y' => $location->y);
+			array_push($this->locations, Location::create($params));
 		}
 	}
 

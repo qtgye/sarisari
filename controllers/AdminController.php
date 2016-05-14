@@ -26,4 +26,9 @@ class AdminController extends Controller
 
 		View::render('admin/page',$this->data);
 	}
+
+	public function edit()
+	{
+		
+	}
 }

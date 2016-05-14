@@ -3,25 +3,44 @@
 /**
 * Location Class
 */
-class Location
+class Location extends Model
 {
+	private $defaults = array(
+		'name' => '',
+		'title' => '',
+		'x' => 0,
+		'y' => 0,
+	);
+
+	private $map = array();
 	
-	function __construct($name, $title = '', $x = 0,$y = 0)
+	function __construct($args = array())
 	{
-		$this->name = $name;
-		$this->title = !empty($title) ? $title : ucfirst($name);
+		parent::__construct();
 
 		$this->map = array(
 			'width' => 531,
 			'height' => 877,
 		);
 
+		$args = array_merge($this->defaults,$args);	
+
+		$this->name = $args['name'];
+		$this->title = !empty($args['title']) ? $args['title'] : ucfirst($args['name']);
+
 		// absolute coordinates
-		$this->x = $x;
-		$this->y = $y;
+		$this->x = $args['x'];
+		$this->y = $args['y'];
 
 		// relative coordinates
 		$this->pX = (100 * $this->x / $this->map['width']) . '%'; // as in percentage X
 		$this->pY = (100 * $this->y / $this->map['height']) . '%'; // as in percentage Y
 	}
+
+
+	public static function create ($args = array())
+	{
+		return new self($args);
+	}
+
 }
