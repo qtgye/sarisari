@@ -13,7 +13,7 @@ class Database
 
 	private $name = DB_NAME;
 
-	private $connection;
+	public $connection;
 
 	private static $instance;
 	
@@ -40,8 +40,7 @@ class Database
 	/**
 	 * Connects the database
 	 * @return void
-	*/
-	 
+	*/	 
 	private function connect()
 	{
 		$this->connection = new mysqli(
@@ -57,5 +56,80 @@ class Database
 		    );
 		    exit();
 		}
+	}
+
+
+	public function insert ($table = NULL, $args = NULL, $types = '')
+	{
+		$result = FALSE;
+
+		if ( NULL == $table || !is_array($args) ) {
+			return FALSE;
+		}
+
+		// prepared statement
+		$keys = array_keys($args);
+		$values = array_values($args);
+		$placeholders = array_map('statement_placeholders', $values);		
+		$query = "INSERT INTO {$table} (". implode(',', $keys) .') VALUES ('. implode(',',$placeholders) .')';
+		$statement = $this->connection->prepare($query);
+
+		if ( !$statement ) {
+			Log::append($this->connection->error);
+			return FALSE;
+		}
+
+		// bind and execute
+		$params = array_merge( array($types) , $values );
+		call_user_func_array(array($statement, 'bind_param'), $params);
+		$result = $statement->execute();
+
+		if ( !$result ) {
+			Log::append($statement->error);
+			return FALSE;
+		}
+
+		return $this->connection->insert_id;
+	}
+
+
+	public function update ($table = NULL, $args = NULL, $types = '')
+	{
+		$result = FALSE;
+
+		if ( NULL == $table || !is_array($args) ) {
+			return FALSE;
+		}
+
+		// unset id
+		if ( isset($args['id']) ) {
+			$id = $args['id'];
+			unset($args['id']);
+		}
+
+		// prepared statement
+		$keys = array_keys($args);
+		$values = array_values($args);
+		$key_values = array_map('statement_key_value', $keys);	
+		$key_values = implode(',', $key_values);
+		$query = "UPDATE {$table} SET {$key_values} WHERE id={$id} ";
+		$statement = $this->connection->prepare($query);
+
+		if ( !$statement ) {
+			Log::append($this->connection->error);
+			return FALSE;
+		}
+
+		// bind and execute
+		$params = array_merge( array($types) , $values );
+		call_user_func_array(array($statement, 'bind_param'), $params);
+		$result = $statement->execute();
+
+		if ( !$result ) {
+			Log::append($statement->error);
+			return FALSE;
+		}
+
+		return TRUE;
 	}
 }

@@ -12,6 +12,21 @@ class Input
 	{
 		
 	}
-}
 
-$input = new Input;
+
+	public static function post()
+	{
+		return $_POST;
+	}
+
+
+	public static function get($key = NULL)
+	{
+		if ( !empty($key) ) {
+			return !empty($_GET[$key]) ? $_GET[$key] : NULL ;
+		}
+
+		return $_GET;		
+	}
+
+}

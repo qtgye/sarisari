@@ -8,6 +8,9 @@
 	<link rel="stylesheet" href="<?= app_path('vendor/Materialize/dist/css/materialize.min.css') ?>">
 	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
+	<!-- CUSTOM CSS -->
+	<link rel="stylesheet" href="<?= app_path('css/admin/main.css') ?>">
+
 </head>
 <body>
 
@@ -18,7 +21,7 @@
 			    <div class="nav-wrapper red">
 			      <div class="col"><a href="/admin" class="brand-logo">Admin Panel</a></div>
 			      <ul class="right">
-			        <li><a href="/admin/add"><i class="material-icons">add</i></a></li>
+			        <li><a href="<?= app_path('admin/add') ?>"><i class="material-icons">add</i></a></li>
 			      </ul>
 			    </div>
 			  </nav>

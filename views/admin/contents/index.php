@@ -8,14 +8,14 @@
 	</thead>
 
 	<tbody>
-	<?php foreach (range(0,9) as $key => $item): ?>
+	<?php foreach ($locations as $key => $location): ?>
 
 		<tr>
-			<td>Location <?= $key ?></td>
+			<td><?= $location->title ?></td>
 			<td>Photos Here</td>
 			<td>
 				<div class="right">
-					<a href="/admin/edit" class="btn btn-floating teal lighten-3"><i class="material-icons">edit</i></a>
+					<a href="<?= app_path('/admin/edit?l='.$location->id) ?>" class="btn btn-floating teal lighten-3"><i class="material-icons">edit</i></a>
 					<a href="#" class="btn btn-floating red lighten-3"><i class="material-icons">delete</i></a>
 				</div>
 			</td>

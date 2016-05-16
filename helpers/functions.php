@@ -1,5 +1,6 @@
 <?php 
 
+
 function app_path($path)
 {
 	$full_path = '/';
@@ -9,6 +10,14 @@ function app_path($path)
 	$full_path .= trim($path,'/');
 	return $full_path;
 }
+
+
+
+function app_uri($path)
+{
+	return app_path($path);
+}
+
 
 function model($model_name,$params = array())
 {
@@ -23,4 +32,22 @@ function model($model_name,$params = array())
 		}
 	}
 	return NULL;
+}
+
+
+function statement_placeholders($item)
+{
+	return '?';
+}
+
+
+function statement_key_value($key)
+{
+	return $key .'=?';
+}
+
+
+function redirect($url)
+{
+	header('Location: ' . app_uri($url));
 }

@@ -7,6 +7,7 @@
 
 <!-- App JS -->
 <script src="<?= app_path('js/admin/app.js') ?>"></script>
+<script src="<?= app_path('js/admin/mapper.js') ?>"></script>
 
 </body>
 </html>

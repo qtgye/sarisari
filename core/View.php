@@ -16,7 +16,7 @@ class View
 	{
 		if ( is_array($data) ) {
 			extract($data);
-		}		
+		}
 
 		$view_path = APP_PATH . '/views/' . trim($view_path,'/') . '.php';
 

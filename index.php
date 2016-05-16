@@ -2,9 +2,15 @@
 
 $files = array(
 
-	// CORE FILES
-	'core/Config',
+	// HELPERS
+	'helpers/functions',
+
+	// CORE FILES	
 	'core/Log',
+	'core/Error',
+	'core/Config',
+	'core/Session',
+	'core/Redirect',
 	'core/Route',
 	'core/Input',
 	'core/View',
@@ -13,7 +19,6 @@ $files = array(
 
 	// OTHER FILES
 	'routes',
-	'helpers/functions',
 
 );
 
@@ -23,3 +28,5 @@ foreach ($files as $file) {
 
 // INIT
 $route->execute_matched();
+
+Session::reset();

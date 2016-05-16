@@ -1,27 +1,32 @@
 <?php 
 
+require_once(APP_PATH . '/models/Location.php');
+require_once(CORE_PATH . '/Session.php');
+
 /**
 * Admin Controller
 */
 class AdminController extends Controller
 {
-	private $data  =array();
 	
 	function __construct()
 	{
+		parent::__construct();
 		$this->data['page'] = 'index';
 	}
 
 
 	public function index()
 	{
+		$this->data['locations'] = Location::all();
+
 		View::render('admin/page',$this->data);
 	}
 
 	public function add()
 	{
 		$this->data['page'] = 'form';
-		$this->data['method'] = 'add';
+		$this->data['method'] = 'create';
 		$this->data['heading'] = 'New Location';
 
 		View::render('admin/page',$this->data);
@@ -29,6 +34,26 @@ class AdminController extends Controller
 
 	public function edit()
 	{
-		
+		$location = Input::get('l');
+
+		if ( !$location ) {
+			redirect('admin');
+		}
+
+		$location = Location::get((int) $location);
+		$location->attributes['id'] = $location->id;
+
+		// Override with form data
+		$form = Session::get('form');
+		if ( !empty($form) ) {			
+			$location->attributes = array_merge($location->attributes,$form);			
+		}
+
+		$this->data['page'] = 'form';
+		$this->data['method'] = 'update';
+		$this->data['heading'] = 'Edit ' . $location->title;
+		$this->data['location'] = $location->attributes;
+
+		View::render('admin/page',$this->data);
 	}
 }

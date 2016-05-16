@@ -109,7 +109,7 @@ class Route
 		}
 
 		$controller = new $registerd_route['controller'];
-		call_user_method($registerd_route['method'], $controller);
+		call_user_func_array(array($controller,$registerd_route['method']), array());
 	}
 
 

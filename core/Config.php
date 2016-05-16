@@ -17,7 +17,7 @@ define('CORE_PATH', dirname(__FILE__));
 
 
 // ERROR REPORTING
-error_reporting(1);
+error_reporting(E_ALL);
 
 
 /**
