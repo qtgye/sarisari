@@ -123,7 +123,7 @@ class Route
 		if ( array_key_exists($this->request_uri, $this->routes) ) {
 			// verify request method
 			if ( strtolower($this->request_method) == $this->routes[$this->request_uri]['request_method'] ) {
-				$this->execute_controller(&$this->routes[$this->request_uri]);				
+				$this->execute_controller($this->routes[$this->request_uri]);				
 			}			
 		}
 	}
