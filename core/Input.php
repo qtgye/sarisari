@@ -14,9 +14,13 @@ class Input
 	}
 
 
-	public static function post()
+	public static function post($key = NULL)
 	{
-		return $_POST;
+		if ( !empty($key) ) {
+			return !empty($_POST[$key]) ? $_POST[$key] : NULL ;
+		}
+
+		return $_POST;		
 	}
 
 
@@ -27,6 +31,12 @@ class Input
 		}
 
 		return $_GET;		
+	}
+
+
+	public static function files()
+	{
+		return $_FILES;
 	}
 
 }

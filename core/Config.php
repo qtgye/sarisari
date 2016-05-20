@@ -5,6 +5,8 @@
 define('APP_PATH', dirname(dirname(__FILE__)));
 define('CORE_PATH', dirname(__FILE__));
 
+ date_default_timezone_set('Asia/Manila');
+
 
 
 /**

@@ -23,7 +23,7 @@
 			      <div class="col"><a href="<?= app_path('/admin') ?>" class="brand-logo">Admin Panel</a></div>
 			      
 					<a href="<?= app_path('/') ?>" class="right">
-						<div class="btn btn-flat red white-text">Go to Site</div>
+						<div class="btn-flat red white-text">Go to Site</div>
 					</a>
 
 			      <!-- <ul class="right">

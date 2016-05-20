@@ -80,7 +80,13 @@ class Database
 		}
 
 		// bind and execute
-		$params = array_merge( array($types) , $values );
+		$merged = array_merge( array($types) , $values );
+		$params = array();
+
+		foreach ($merged as $key => $value) {
+			$params[$key] = &$merged[$key];
+		}
+
 		call_user_func_array(array($statement, 'bind_param'), $params);
 		$result = $statement->execute();
 
@@ -121,7 +127,13 @@ class Database
 		}
 
 		// bind and execute
-		$params = array_merge( array($types) , $values );
+		$merged = array_merge( array($types) , $values );
+		$params = array();
+
+		foreach ($merged as $key => $value) {
+			$params[$key] = &$merged[$key];
+		}
+
 		call_user_func_array(array($statement, 'bind_param'), $params);
 		$result = $statement->execute();
 

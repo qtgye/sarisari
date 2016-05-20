@@ -4,15 +4,29 @@
  * PREPARE FILES TO PRELOAD
  */
 
-$contents = scandir(APP_PATH.'/assets');
+$assets = scandir(APP_PATH.'/assets');
+$uploads = scandir(APP_PATH.'/uploads');
 $images = array(); 
 
-if ( is_array($contents) ) {
-    foreach ($contents as $key => $file) {
+// ASSET FILES
+if ( is_array($assets) ) {
+    foreach ($assets as $key => $file) {
         if ( preg_match('/^[.]+/', $file) ) continue;        
         $file_path= APP_PATH.'/assets/'.$file;
         $size = filesize($file_path);
         $source = app_path('/assets/'.$file);
+        $type = 'IMAGE';
+        array_push($images, compact('source','size','type'));
+    }
+}
+
+// UPLOADS
+if ( is_array($uploads) ) {
+    foreach ($uploads as $key => $file) {
+        if ( preg_match('/^[.]+/', $file) ) continue;        
+        $file_path= APP_PATH.'/uploads/'.$file;
+        $size = filesize($file_path);
+        $source = app_path('/uploads/'.$file);
         $type = 'IMAGE';
         array_push($images, compact('source','size','type'));
     }
@@ -58,10 +72,12 @@ $preload_json = json_encode($preload);
 
 <body>
 <div id="main">    
+
 	<div id="header">
     	<h1>Sari-Sari<br><span>Stories</span></h1>
     	<p>Follow us as we go on the Journey of a Bottle across the Philippines! Get to know our retailers by clicking the Coke bottles and find out how they’ve thrived by working together with Coca-Cola FEMSA.</p>
     </div> 
+
     <div class="map">
         <img src="<?= app_path('assets/background-map-trans-trimmed.png') ?>" alt="" class="map-image">
         <div class="map-markers">
@@ -69,17 +85,20 @@ $preload_json = json_encode($preload);
                 <div
                     class="marker <?php echo 'slideDown'.($key ? $key+1 : '')  ?>"
                     id="<?php echo $location->name ?>"
-                    style="left: <?= $location->pX ?>; top: <?= $location->pY ?>;"
+                    style="left: <?= $location->x ?>%; top: <?= $location->y ?>%;"
                 >
                     <div class="popover">
                         <h2><?= $location->title ?></h2>
                         <div class="popover-photos">
-                            <?php foreach (range(1,3) as $photo): ?>
+                            <?php foreach (range(0,2) as $key => $photo): ?>
                                 <div class="popover-photo-image">
                                     <div class="popover-photo-ratio">
-                                        <img class="js-popover" data-popover-group="<?php echo $location->name ?>" src="<?= app_path('assets/thumbnail.png') ?>" alt="">
+                                        <?php
+                                            $src = !empty($location->images[$key]) ? app_path('/uploads/'.$location->images[$key]->file_name) : app_path('assets/thumbnail.png');
+                                        ?>
+                                        <img class="js-popover" data-popover-group="<?php echo $location->name ?>" src="<?= $src ?>" alt="">                                        
                                     </div>                                   
-                                </div>                                
+                                </div>            
                             <?php endforeach ?>
                         </div>
                     </div>
@@ -87,6 +106,9 @@ $preload_json = json_encode($preload);
             <?php endforeach ?>            
         </div>
     </div>
+
+    <img src="<?= app_path('/assets/femsa.png') ?>" alt="" class="femsa-logo">
+
 </div>
 
 <!-- progress block -->

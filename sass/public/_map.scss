@@ -27,6 +27,7 @@
 	height: auto;	
 	cursor: pointer;
 	transform: translateX(-50%) translateY(-50%) translateZ(0);
+	z-index: 500;
 
 	&:after {
 		content: '';

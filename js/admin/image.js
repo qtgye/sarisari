@@ -20,7 +20,11 @@ $input = $('.js-upload-input'),
 $imagesContainer = $('.js-images'),
 $imageCardTemplate = $('.js-image-item'),
 $uploadsContainer = $('.js-uploads'),
-$fileUploadTemplate = $('.js-upload-item');
+$fileUploadTemplate = $('.js-upload-item'),
+
+$imageDeleteConfirm = $('#imageDeleteConfirm'),
+
+images = {};
  	
 
 
@@ -44,14 +48,14 @@ var Image = function (opts) {
 			name 		: '',
 			address		: '',
 			profession 	: '',
-			copy 		: ''
+			story 		: ''
 		},
 		opts = $.extend({},defaults,opts);
 
 	/*
 	Update properties
 	 */
-	for ( key in defauts ) {
+	for ( key in defaults ) {
 		_self[key] = opts[key];
 	}
 
@@ -59,20 +63,89 @@ var Image = function (opts) {
 	DOM elements
 	 */
 
-	_self.$element 	= $imageCardTemplate.clone();
+    _self.guid = guid();
 
-	_self.$img 			= _self.$element.find('.js-image-img');
-
-	_self.$info 		= _self.$element.find('.js-image-info');
-	_self.$name 		= _self.$info.find('.js-image-name');
-	_self.$address 		= _self.$info.find('.js-image-address');
-	_self.$profession 	= _self.$info.find('.js-image-profession');
-	_self.$copy 		= _self.$info.find('.js-image-copy');
-
+	_self.$element 	    = $imageCardTemplate.clone();
+	_self.$img 			= _self.$element.find('.js-image-img')[0].src = _self.src;
+	_self.$info 		= _self.$element.find('.js-image-info').text(_self.info);
+	_self.$name 		= _self.$info.find('.js-image-name').text(_self.name);
+	_self.$address 		= _self.$info.find('.js-image-address').text(_self.address);
+	_self.$profession 	= _self.$info.find('.js-image-profession').text(_self.profession);
+	_self.$copy 		= _self.$info.find('.js-image-copy').text(_self.story);
 	_self.$edit 		= _self.$element.find('.js-image-edit');
 	_self.$delete 		= _self.$element.find('.js-image-delete');
 
-	_self.$element.appendTo($imagesContainer).removeClass('hide');
+    if ( opts.id ) {
+        _self.id = opts.id;
+    }
+
+
+    /*
+    PRIVATE FUNCTIONS
+     */
+
+    function confirmDelete () {
+        var $confirmBtn = $imageDeleteConfirm.find('.modal-confirm');
+        $imageDeleteConfirm.find('img')[0].src = _self.src;
+        $imageDeleteConfirm.openModal({
+            ready : function () {
+                $confirmBtn.data('guid',_self.guid);
+            },
+            complete : function () {
+                $confirmBtn.data('guid',null);
+            }
+        });
+    }
+
+    function remove() {
+        _self.$element.remove();
+    }
+
+
+
+    /*
+    PUBLIC METHODS
+     */
+
+    _self.delete = function () {
+        _self.$element.addClass('is-loading');
+
+        $.ajax({
+            url : '/api/image_delete',
+            type : 'POST',
+            data : {
+                id : _self.id
+            },
+            dataType : 'json',
+            success : function (data) {
+                if ( data.success ) {
+
+                    remove();
+                    delete images[_self.guid];
+                } 
+
+                _self.$element.removeClass('is-loading');                
+            },
+            error : function (resp) {
+                _self.$element.removeClass('is-loading');
+            }
+       });
+    };
+
+
+
+    /*
+    BINDS
+     */
+
+    // _self.$edit.on('click',showEdit);
+    _self.$delete.on('click',confirmDelete);
+
+
+    /*
+    ADD TO STORE
+     */
+    images[_self.guid] = _self;
 
 
 };
@@ -89,6 +162,7 @@ var FileObject = function (file) {
 
     _file.dataURL = URL.createObjectURL(file);
 
+    _file.location_id   = $input.data('location');
     _file.name          = file.name;
     _file.size          = file.size;
     _file.mimeType      = file.mimeType;
@@ -103,21 +177,24 @@ var FileObject = function (file) {
 
     // private functions  
 
-    function onUploadSuccess (data,uploadDone) {
+    function onUploadSuccess (data) {
         // uploaded++;
         // requestsCount++;
-        // _file.isUploadSuccess = true;
-        // _file.isUploadDone = true;
+        _file.isUploadSuccess = true;
+        _file.isUploadDone = true;
         // if ( isFunction(uploadDone) ) uploadDone();
         // _file.$element.removeClass('is-uploading').addClass('is-success');
         // console.log('data',data);
-        console.log('Done uploading file: ',_file.$element);
+
+        data.data.src = data.data.file_name;
+        _image = new Image(data.data);
+        _image.$element.appendTo($imagesContainer).removeClass('hide');
     }
 
-    function onUploadError (data,uploadDone) {
+    function onUploadError (data) {
         // request = null;
         // requestsCount++;
-        // _file.isUploadDone = true;
+        _file.isUploadDone = true;
 
         // if ( isFunction(uploadDone) ) uploadDone();
         _file.$element.addClass('is-error');
@@ -130,10 +207,10 @@ var FileObject = function (file) {
         console.warn('The file '+_file.name+' was not uploaded due to an error:', data);       
     }
 
-    function onRequestError (xhr,uploadDone) {
+    function onRequestError (xhr) {
         // request = null;
         // requestsCount++;
-        // _file.isUploadDone = true;
+        _file.isUploadDone = true;
 
         // if ( isFunction(uploadDone) ) uploadDone();
         _file.$element.addClass('is-error');
@@ -153,10 +230,10 @@ var FileObject = function (file) {
      * @param  {Function} uploadDone callback function for the request
      * @return void
      */
-    function upload ( uploadDone ) {
-
+    function upload ( ) {
         var formData = new FormData();
         formData.append('file',_file.originalFile);
+        formData.append('location_id',_file.location_id);
         request = $.ajax({
             url : '/api/upload',
             type : 'POST',
@@ -165,26 +242,17 @@ var FileObject = function (file) {
             dataType : 'json',
             processData : false, // Don't process the files
             contentType : false, // Set content type to false as jQuery will tell the server its a query string request
-            // xhr: function () {
-            //     var xhr = new window.XMLHttpRequest();
-            //     // Upload progress
-            //     xhr.upload.addEventListener("progress", function (evt) {
-            //         if (evt.lengthComputable) {
-            //             var percentComplete = evt.loaded / evt.total;
-            //             $progress.css('width',(percentComplete * 100) + '%');
-            //         }
-            //     }, false);
-            //     return xhr;
-            // },
             success : function (data,status,xhr) {
                 request = null;
                 if ( !data.success ) {
-                    onUploadError(data,uploadDone); return;
+                    onUploadError(data); return;
                 }
-                onUploadSuccess(data, uploadDone);
+                onUploadSuccess(data);
+                _file.$element.remove();
             },
             error : function (xhr) {
-                onRequestError(xhr,uploadDone);
+                onRequestError(xhr);
+                _file.$element.remove();
             }
         });
     }
@@ -231,6 +299,18 @@ var FileObject = function (file) {
  * -----------------------------------
  */
 
+
+function guid() {
+  function s4() {
+    return Math.floor((1 + Math.random()) * 0x10000)
+      .toString(16)
+      .substring(1);
+  }
+  return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+    s4() + '-' + s4() + s4() + s4();
+}
+
+
 /**
  * gets a short string of the file type
  * @param  {object} fileObject File instance
@@ -258,18 +338,85 @@ function getFileType (file) {
 }
 
 
-// test
-$input.on('change',onFilesSelect);
+function bindInput() {
+    $input.on('change',onFilesSelect);
+    function onFilesSelect() {
+        var files = $input[0].files;
 
-function onFilesSelect() {
-	var files = $input[0].files;
+        if ( files.length > (3-Object.keys(images).length) ) {
+            alert('You can only upload up to 3 images.');
+            return;
+        }
 
-	console.log('files',files);	
-
-	[].forEach.call(files,function (file) {
-		var _file = new FileObject(file);
-	});
+        [].forEach.call(files,function (file) {
+            var _file = new FileObject(file);
+        });
+    }
 }
+
+
+function bindImageDeleteModal() {
+    var $confirmBtn = $imageDeleteConfirm.find('.modal-confirm');
+    $confirmBtn.on('click',function () {
+       var imageGUID = $confirmBtn.data('guid');
+
+       if ( !imageGUID ) return;
+
+       var _image = images[imageGUID];
+
+       if ( _image && _image.delete ) {
+            _image.delete();
+       }
+       
+    });
+    
+}
+
+
+function onGetImagesError(resp) {
+    console.warn('Error ',resp);
+}
+
+
+function getImages () {
+    // console.log('$input',$input);
+    var location_id = $input.data('location');
+    if ( !location_id ) return;
+    $.ajax({
+        url : '/api/images',
+        type : 'POST',
+        data : {
+            'location_id' : Number(location_id)
+        },
+        dataType : 'json',
+        success : function (data,xhr) {
+            if ( data.success ) {
+                // disable photo upload
+                if ( data.items.length == 3 ) {
+                    $input[0].disabled = true;
+                }
+                data.items.forEach(function (_item) {
+                    var _image = new Image(_item);
+                    _image.$element.appendTo($imagesContainer).removeClass('hide');
+                });                
+            } else {
+                onGetImagesError(xhr);
+            }
+        },
+        error : function (xhr) {
+            onGetImagesError(xhr);
+        }
+    });
+}
+
+
+/**
+ * INIT
+ */
+
+bindInput();
+bindImageDeleteModal();
+getImages();
 
 
 

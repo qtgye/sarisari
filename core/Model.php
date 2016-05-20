@@ -7,25 +7,28 @@ require_once('Database.php');
 */
 class Model
 {
-	protected $db;
 
 	public $table_name = '';
 
 	public $attributes = array();
 
 	public $types = '';
+
+	public static $instance = NULL;
 	
 	function __construct()
 	{
-		$this->db = Database::get_instance();
+		// $this->db = Database::get_instance();
 	}
 
 
 	public function save ()
 	{
 		$method = isset($this->attributes['id']) ? 'update' : 'insert';
+		$db = Database::get_instance();
+
 		$result = call_user_func_array(
-					array($this->db,$method),
+					array($db,$method),
 					array($this->table_name, $this->attributes, $this->types)
 				);
 
@@ -42,5 +45,19 @@ class Model
 		// id | FALSE
 		return $result;
 	}
+
+
+
+	public function delete()
+	{
+		$db 	= Database::get_instance();
+		$table 	= $this->table_name;
+		$id 	= $this->id;
+
+		$result = $db->connection->query("DELETE FROM {$table} WHERE id={$id}");
+		return $result;
+	}
+
+
 
 }

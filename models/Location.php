@@ -1,5 +1,8 @@
 <?php 
 
+require_once(CORE_PATH . '/Model.php');
+require_once(APP_PATH . '/models/Image.php');
+
 /**
 * Location Class
 */
@@ -18,7 +21,7 @@ class Location extends Model
 
 	public $types = 'ssdddd';
 
-	private static $instance;
+	public $images = array();
 	
 	public function __construct($args = array())
 	{
@@ -54,6 +57,9 @@ class Location extends Model
 		// timestamps
 		$this->attributes['created_at'] = time();
 		$this->attributes['updated_at'] = $this->attributes['created_at'];
+
+		// images
+		// $this->images = $this->images();
 	}
 
 
@@ -76,7 +82,7 @@ class Location extends Model
 	{
 		if ( NULL == $id ) return NULL;
 
-		$instance = self::get_instance();
+		$instance = static::get_instance();
 		$db = Database::get_instance();
 		$table = $instance->table_name;
 
@@ -88,16 +94,16 @@ class Location extends Model
 		}
 
 		$result = $result->num_rows > 0 ? $result->fetch_assoc() : NULL;
-		$location = Location::create($result);
+		$item = static::create($result);
 
-		return $location;
+		return $item;
 	}
 
 
 	public static function all ()
 	{
-		$instance = self::get_instance();
 		$db = Database::get_instance();
+		$instance = static::get_instance();		
 		$table = $instance->table_name;
 
 		$result = $db->connection->query("SELECT * FROM {$table} ORDER BY id DESC");
@@ -107,13 +113,37 @@ class Location extends Model
 			return NULL;
 		}
 
-		$locations = array();
-			while ($location = $result->fetch_assoc()) {
-			array_push($locations, Location::create($location));
+		$items = array();
+		while ($item = $result->fetch_assoc()) {
+			$location = static::create($item);
+			$location->images = Image::get_location_images($location->id);
+			array_push($items, $location);
 		}
 
-		return $locations;
-
+		return $items;
 	}
+
+
+	// public function images()
+	// {
+	// 	$instance = self::get_instance();
+	// 	$table = $instance->table_name;
+	// 	$location_id = $this->id;
+	// 	$images = NULL;
+
+	// 	$result = $this->db->query("SELECT * FROM photos WHERE location_id={$location_id} ORDER BY id DESC");
+
+	// 	if ( !$result || $db->connection->error ) {
+	// 		Log::append($db->connection->error);
+	// 		return NULL;
+	// 	}
+
+	// 	$items = array();
+	// 	while ($item = $result->fetch_assoc()) {
+	// 		array_push($items, static::create($item));
+	// 	}
+
+	// 	return $items;
+	// }
 
 }
