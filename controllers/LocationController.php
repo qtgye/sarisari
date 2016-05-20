@@ -43,9 +43,9 @@ class LocationController extends Controller
 	public function update()
 	{
 		$post = Input::post();
-		Session::set('form',$post);
-
 		if ( !isset($post['id']) ) Redirect::back();
+
+		Session::set('form',$post);
 
 		$location = Location::get($post['id']);
 		if ( !$location ) Redirect::back();
@@ -67,4 +67,12 @@ class LocationController extends Controller
 		Session::set('flash',"Successfully updated \"{$title}\"");
 		Redirect::back();
 	}
+
+
+	public function delete ()
+	{
+		$post = Input::post();
+		echo json_encode($post);
+	}
+
 }
