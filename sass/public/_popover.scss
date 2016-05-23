@@ -1,7 +1,7 @@
 .popover {
 	position: absolute;
-	top: 10px;
-	right: 80px;
+	top: -20px;
+	right: 30px;
 	visibility: hidden;
 	width: 350px;
 	opacity: 0;
@@ -10,9 +10,10 @@
 	pointer-events: none;
 	z-index: 500;
 	background-color: #fff;
-	padding: 15px;
+	padding: 10px 10px 20px 10px;
 	box-sizing: border-box;
-	filter: drop-shadow(10px 10px 10px rgba(0,0,0,0.5));
+	// filter: drop-shadow(10px 10px 10px rgba(0,0,0,0.5));
+	box-shadow: 7px 6px 5px -1px rgba(0,0,0,0.29);
 	transition: opacity 0.3s ease,
 				visibility 0.3s ease,
 				transform 0.3s ease;
@@ -20,16 +21,22 @@
 	&:after {
 		content: '';
 		display: block;
+		// 	display: none;
 		position: absolute;
-		width: 0;
-		height: 0;
+		// width: 0;
+		// height: 0;
+		// top: 0;
+		// right: -59px;
+		// border-left: 30px solid white;
+		// border-top: 15px solid white;
+		// border-right: 30px solid transparent;
+		// border-bottom: 15px solid transparent;
+
+		// transparent
+		width: 30px;
+		height: 100%;
 		top: 0;
-		right: -59px;
-		border-left: 30px solid white;
-		border-top: 15px solid white;
-		border-right: 30px solid transparent;
-		border-bottom: 15px solid transparent;
-		// box-shadow: 10px 10px 10px rgba(0,0,0,0.5);
+		left: 100%;
 	}
 
 	.marker:hover & {
@@ -40,10 +47,12 @@
 	}
 
 	h2 {
-		font-size: 1.8rem;
+		font-size: 25px;
 		text-transform: uppercase;
 		margin: 0 0 5px 0;
 		color: red;
+		font-weight: lighter;
+		margin-bottom: 0px;
 	}
 }
 

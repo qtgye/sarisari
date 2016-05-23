@@ -51,7 +51,7 @@ $preload_json = json_encode($preload);
 
     <style>
         .marker::after {
-            background-image: url("<?= app_path('assets/marker.png') ?>");
+            background-image: url("<?= app_path('assets/icon2.png') ?>");
         }
         .popup-arrow.left {
             background-image: url("<?= app_path('assets/arrow-left.png') ?>");
