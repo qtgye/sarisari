@@ -113,6 +113,7 @@
 
     <?php include APP_PATH . '/views/admin/partials/image-card.php' ?>
     <?php include APP_PATH . '/views/admin/partials/image-delete-confirm.php' ?>
+    <?php include APP_PATH . '/views/admin/partials/story-edit.php' ?>
 
     <div class="row">
       <div class="col">

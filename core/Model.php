@@ -24,12 +24,17 @@ class Model
 
 	public function save ()
 	{
-		$method = isset($this->attributes['id']) ? 'update' : 'insert';
+		$method = isset($this->id) ? 'update' : 'insert';
 		$db = Database::get_instance();
+		$values = $this->attributes;
+
+		if ( $method == 'update' ) {
+			$values['id'] = $this->id;
+		}
 
 		$result = call_user_func_array(
 					array($db,$method),
-					array($this->table_name, $this->attributes, $this->types)
+					array($this->table_name, $values, $this->types)
 				);
 
 		if ( is_int($result) ) {
@@ -44,6 +49,26 @@ class Model
 
 		// id | FALSE
 		return $result;
+	}
+
+
+
+	public function update($data = array())
+	{
+		foreach ($this->attributes as $key => $value) {
+			if ( array_key_exists($key, $data) ) {
+				$this->attributes[$key] = $data[$key];
+				$this->{$key} = $data[$key];
+			}
+		}
+
+		foreach ($data as $key => $value) {
+			if ( isset($this->attributes[$key]) &&  $this->attributes[$key] != $data[$key] ) {
+				return FALSE;
+			}
+		}
+
+		return TRUE;
 	}
 
 

@@ -23,6 +23,9 @@ $uploadsContainer = $('.js-uploads'),
 $fileUploadTemplate = $('.js-upload-item'),
 
 $imageDeleteConfirm = $('#imageDeleteConfirm'),
+$storyEditModal = $('#storyEdit'),
+
+currentImage,
 
 images = {};
  	
@@ -59,6 +62,10 @@ var Image = function (opts) {
 		_self[key] = opts[key];
 	}
 
+    if ( opts.file_name ) {
+        _self.src = '/uploads/'+opts.file_name;
+    }
+
 	/*
 	DOM elements
 	 */
@@ -71,13 +78,21 @@ var Image = function (opts) {
 	_self.$name 		= _self.$info.find('.js-image-name').text(_self.name);
 	_self.$address 		= _self.$info.find('.js-image-address').text(_self.address);
 	_self.$profession 	= _self.$info.find('.js-image-profession').text(_self.profession);
-	_self.$copy 		= _self.$info.find('.js-image-copy').text(_self.story);
-	_self.$edit 		= _self.$element.find('.js-image-edit');
-	_self.$delete 		= _self.$element.find('.js-image-delete');
+	_self.$story 		= _self.$info.find('.js-image-story').text(_self.story);
+    _self.replaceImageInput  = _self.$element.find('.js-image-replace-input');
+    _self.$replaceImage = _self.$element.find('.js-image-replace');
+	_self.$editStory	= _self.$element.find('.js-story-edit');
+	_self.$delete 		= _self.$element.find('.js-image-delete');    
 
     if ( opts.id ) {
         _self.id = opts.id;
     }
+
+    _self.$name.text(_self.name);
+    _self.$address.text(_self.address);
+    _self.$profession.text(_self.profession);
+    _self.$story.text(_self.story);
+
 
 
     /*
@@ -96,6 +111,25 @@ var Image = function (opts) {
             }
         });
     }
+
+
+    function editStory(e) {
+        $storyEditModal.find('[name="name"]').val(_self.name);
+        $storyEditModal.find('[name="profession"]').val(_self.profession);
+        $storyEditModal.find('[name="address"]').val(_self.address);
+        $storyEditModal.find('[name="story"]').val(_self.story);
+        $storyEditModal.openModal();
+        currentImage = _self; 
+    }    
+
+
+    function replaceImage() {
+        var $input = $(this),
+            file = $input[0].files[0];
+        console.log('files',files);
+    }
+
+
 
     function remove() {
         _self.$element.remove();
@@ -140,6 +174,8 @@ var Image = function (opts) {
 
     // _self.$edit.on('click',showEdit);
     _self.$delete.on('click',confirmDelete);
+    _self.replaceImageInput.on('change',replaceImage);
+    _self.$editStory.on('click',editStory);   
 
 
     /*
@@ -355,6 +391,11 @@ function bindInput() {
 }
 
 
+function bindStoryEditModal() {
+    $storyEditModal.find('.modal-confirm').on('click',updateStory);
+}
+
+
 function bindImageDeleteModal() {
     var $confirmBtn = $imageDeleteConfirm.find('.modal-confirm');
     $confirmBtn.on('click',function () {
@@ -410,12 +451,53 @@ function getImages () {
 }
 
 
+function updateStory() {
+    var $form = $storyEditModal.find('form'),
+        formData = new FormData($form[0]),
+        dataObject = {};
+
+    formData.append('id',currentImage.id);
+    currentImage.$element.addClass('is-loading');
+
+    for (var [key, value] of formData.entries()) { 
+      dataObject[key] = (key == 'id' ? Number(value) : value);
+    }
+
+    $.ajax({
+        url : '/api/image_update',
+        dataType : 'json',
+        type : 'post',
+        data : dataObject,
+        success : function (data,message,xhr) {
+            currentImage.$element.removeClass('is-loading');
+            if ( data.success ) {
+                // Update image card contents
+                for ( key in dataObject ) {
+                    currentImage[key] = dataObject[key];
+                }
+                currentImage.$name.text(currentImage.name);
+                currentImage.$address.text(currentImage.address);
+                currentImage.$profession.text(currentImage.profession);
+                currentImage.$story.text(currentImage.story);
+            } else {
+                console.warn('Unable to save data',xhr);
+            }
+        },
+        error : function (xhr) {
+            _self.$element.addClass('is-loading');
+            console.warn('Unable to save data',xhr);
+        }
+    });
+}
+
+
 /**
  * INIT
  */
 
 bindInput();
 bindImageDeleteModal();
+bindStoryEditModal();
 getImages();
 
 

@@ -29,17 +29,27 @@ class ImageController extends Controller
 		);
 
 		if ( is_array($files) && count($files) > 0 ) {
-			$uploaded = Image::upload($files['file'],$post['location_id']);
+			$uploaded = Image::upload($files['file']);
+			if ( $uploaded ) {
+				$response['success'] = TRUE;
+				$response['message'] = 'Upload successful';
+			}
 		}
 
-		if ( $uploaded ) {
-        	$response['success'] = true;
-        	$response['data'] = Image::get($uploaded);
-        	$response['data']->file_name = app_path('/uploads/'.$response['data']->file_name);
-        	unset($response['data']->db);
-        } else {
-        	$response['message'] = 'Unable to save item. Please check errorlog for details.';
-        }
+		if ( $uploaded && !empty($post)) {
+			$data = array_merge($uploaded,array('location_id'=>$post['location_id']));
+			$image = Image::create($data);
+
+			if ( $image->save() ) {
+				$response['success'] = true;
+				$response['message'] = 'Successfully saved data';
+	        	$response['data'] = Image::get($image->id);
+	        	unset($response['data']->db);
+			} else {
+				$response['message'] = 'Unable to save item. Please check errorlog for details.';
+			}        	
+        	
+        } 
 
 		echo json_encode($response);
 		exit();
@@ -64,7 +74,7 @@ class ImageController extends Controller
 		$db = Database::get_instance();
 		$images = NULL;
 
-		$result = $db->connection->query("SELECT * FROM photos WHERE location_id={$location_id} ORDER BY id DESC");
+		$result = $db->connection->query("SELECT * FROM photos WHERE location_id={$location_id} ORDER BY id");
 
 		if ( !$result || $db->connection->error ) {
 			Log::append($db->connection->error);
@@ -115,6 +125,67 @@ class ImageController extends Controller
 		} else {
 			Log::append(error_get_last());
 			$response['message'] = 'Unable to delete image. Please check errorlog.';
+		}
+
+		echo json_encode($response);
+		exit();
+	}
+
+
+
+	public function update()
+	{
+		$image_id = Input::post('id');
+		$response = array(
+			'success' => FALSE,
+			'message' => array()
+		);
+
+		if ( !isset($image_id) ) {
+			echo json_encode($response);
+			exit();
+		}
+
+		$image = Image::get($image_id);
+		$new_data = Input::post();
+
+		if ( $image->update($new_data) ) {
+			if ( $image->save() ) {
+				$response['success'] = TRUE;
+				$response['message'] = 'Successfully saved data';
+			} else {
+				$response['message'] = 'Unable to save';
+			}
+			
+		} else {
+			$response['message'] = 'Unable to update';
+		}	
+
+		echo json_encode($response);
+		exit();
+	}
+
+
+
+
+	public function get ()
+	{
+		$image_id = Input::post('id');
+		$response = array(
+			'success' => FALSE,
+			'message' => ''
+		);
+
+		if ( !isset($image_id) ) {
+			echo json_encode($response);
+			exit();
+		}
+
+		$image = Image::get($image_id);
+
+		if ( $image != NULL ) {
+			$response['success'] = TRUE;
+			$response['data'] = $image;
 		}
 
 		echo json_encode($response);

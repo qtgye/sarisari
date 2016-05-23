@@ -13,3 +13,5 @@ $route->post('api/update','LocationController@update');
 $route->post('api/upload','ImageController@upload');
 $route->post('api/images','ImageController@location_images');
 $route->post('api/image_delete','ImageController@image_delete');
+$route->post('api/image_get','ImageController@get');
+$route->post('api/image_update','ImageController@update');

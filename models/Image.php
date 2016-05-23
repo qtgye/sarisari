@@ -34,11 +34,12 @@ class Image extends Model
 		parent::__construct();
 
 		foreach ($this->defaults as $key => $value) {
+
 			$value = !empty($data[$key]) ? $data[$key] : $value;
 			$value = in_array($key, $this->numbers) ? (integer) $value : $value;
 
 			$this->attributes[$key] = $value;
-			$this->{$key} = $value;
+			$this->{$key} = $value;		
 
 			if ( isset($data['id']) ) {
 				$this->id = (integer) $data['id'];
@@ -65,7 +66,7 @@ class Image extends Model
 	}
 
 
-	public static function upload ($file, $location_id = NULL)
+	public static function upload ($file)
 	{
 		$uploads_dir = APP_PATH . '/uploads/';
         $uploaded = FALSE;       
@@ -77,9 +78,9 @@ class Image extends Model
         $title = $original_file_name;
 
         if ( move_uploaded_file($file['tmp_name'], $uploads_dir . $file_name) ) {  
-            $data = compact('title','file_name','file_type','size','location_id');
-            $image = self::create($data);
-            $uploaded = !empty($image) ? $image->save() : FALSE;
+            $uploaded = compact('title','file_name','file_type','size');
+            // $image = self::create($data);
+            // $uploaded = !empty($image) ? $image->save() : FALSE;
         }
 
         return $uploaded;
