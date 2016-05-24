@@ -34,7 +34,7 @@
     <div class="col s6">
       <div class="row">
         <div class="input-field col s12">
-          <input id="name" type="text" class="validate" name="name" value="<?= isset($location['name']) ? $location['name'] : '' ?>" required>
+          <input id="name" type="text" class="validate" name="title" value="<?= isset($location['title']) ? $location['title'] : '' ?>" required>
           <label for="name">Location Name</label>
         </div>
       </div>

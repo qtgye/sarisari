@@ -55,6 +55,7 @@ class LocationController extends Controller
 		}
 
 		$location->attributes = array_merge($location->attributes,$post);
+		$location->attributes['name'] = strtolower(str_replace(' ', '-', $post['title']));
 		$result = $location->save();
 
 		if ( !$result ) {
