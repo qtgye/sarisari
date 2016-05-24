@@ -73,13 +73,14 @@ var Image = function (opts) {
     _self.guid = guid();
 
 	_self.$element 	    = $imageCardTemplate.clone();
-	_self.$img 			= _self.$element.find('.js-image-img')[0].src = _self.src;
+    _self.$imgContainer = _self.$element.find('.js-image-container');
+	_self.$img 			= _self.$element.find('.js-image-img');
 	_self.$info 		= _self.$element.find('.js-image-info').text(_self.info);
 	_self.$name 		= _self.$info.find('.js-image-name').text(_self.name);
 	_self.$address 		= _self.$info.find('.js-image-address').text(_self.address);
 	_self.$profession 	= _self.$info.find('.js-image-profession').text(_self.profession);
 	_self.$story 		= _self.$info.find('.js-image-story').text(_self.story);
-    _self.replaceImageInput  = _self.$element.find('.js-image-replace-input');
+    _self.$replaceImageInput  = _self.$element.find('.js-image-replace-input');
     _self.$replaceImage = _self.$element.find('.js-image-replace');
 	_self.$editStory	= _self.$element.find('.js-story-edit');
 	_self.$delete 		= _self.$element.find('.js-image-delete');    
@@ -88,10 +89,14 @@ var Image = function (opts) {
         _self.id = opts.id;
     }
 
+    _self.$img.attr('src',_self.src);
     _self.$name.text(_self.name);
     _self.$address.text(_self.address);
     _self.$profession.text(_self.profession);
     _self.$story.text(_self.story);
+
+    _self.$replaceImageInput.attr('id',_self.guid);
+    _self.$replaceImageInput.parent('label').attr('for',_self.guid);
 
 
 
@@ -125,8 +130,36 @@ var Image = function (opts) {
 
     function replaceImage() {
         var $input = $(this),
-            file = $input[0].files[0];
-        console.log('files',files);
+            files = $input[0].files[0],
+            formData = new FormData();
+
+        _self.$element.addClass('is-loading');
+
+        formData.append('file',files);
+        formData.append('id',_self.id);
+
+        $.ajax({
+            url : '/api/upload',
+            type : 'POST',
+            dataType : 'json',
+            data : formData,
+            processData : false, // Don't process the files
+            contentType : false, // Set content type to false as jQuery will tell the server its a query string request
+            success : function (data,status,xhr) {
+                _self.$element.removeClass('is-loading');
+                if ( data.success ) {
+                    _self.src = '/uploads/'+data.data.file_name;
+                    _self.$img.attr('src',_self.src);
+                    return;
+                }
+                console.log('Unable to upload file',xhr);                
+            },
+            error : function (xhr) {
+                _self.$element.removeClass('is-loading');
+                console.log('Unable to upload file',xhr);  
+            }
+
+        });
     }
 
 
@@ -153,7 +186,6 @@ var Image = function (opts) {
             dataType : 'json',
             success : function (data) {
                 if ( data.success ) {
-
                     remove();
                     delete images[_self.guid];
                 } 
@@ -174,7 +206,7 @@ var Image = function (opts) {
 
     // _self.$edit.on('click',showEdit);
     _self.$delete.on('click',confirmDelete);
-    _self.replaceImageInput.on('change',replaceImage);
+    _self.$replaceImageInput.on('change',replaceImage);
     _self.$editStory.on('click',editStory);   
 
 
@@ -484,7 +516,7 @@ function updateStory() {
             }
         },
         error : function (xhr) {
-            _self.$element.addClass('is-loading');
+            currentImage.$element.addClass('is-loading');
             console.warn('Unable to save data',xhr);
         }
     });

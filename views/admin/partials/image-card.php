@@ -8,8 +8,8 @@
         <div class="aspect-ratio">
           <img src="http://www.lorempixel.com/300/300" alt="" class="js-image-img">
         </div>     
-        <label for="replace_image" class="btn grey lighten-3 grey-text text-grey-darken-2 js-image-replace image-card-edit" data-id="">
-            <input id="replace_image" accept="image/*" type="file" name="file" name="file" hidden class="js-image-replace-input hide">
+        <label for="" class="btn grey lighten-3 grey-text text-grey-darken-2 js-image-replace image-card-edit" data-id="">
+            <input id="" accept="image/*" type="file" name="file" name="file" hidden class="js-image-replace-input hide">
             Replace Image
         </label>
 
