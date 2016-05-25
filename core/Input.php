@@ -34,8 +34,12 @@ class Input
 	}
 
 
-	public static function files()
+	public static function files($key = NULL)
 	{
+		if ( !empty($key) ) {
+			return !empty($_FILES[$key]) ? $_FILES[$key] : NULL ;
+		}
+
 		return $_FILES;
 	}
 

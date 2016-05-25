@@ -118,3 +118,12 @@
 	padding-left: 10px;
 	box-sizing: border-box;
 }
+
+
+
+// Overrides
+// ------------------------------------------------------------------------------------
+
+.js-image-popup-modal {
+	z-index: 500 !important;
+}

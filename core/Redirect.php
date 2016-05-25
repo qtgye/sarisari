@@ -31,9 +31,13 @@ class Redirect
 
 	public static function back()
 	{
+		if ( !isset($_SERVER['HTTP_REFERER']) ) {
+			self::error('404');
+		}
+
 		$previous = $_SERVER['HTTP_REFERER'];
 		$instance = self::get_instance();
-		$instance->set_location($previous);
+		$instance->set_location($previous);		
 	}
 
 
@@ -41,5 +45,13 @@ class Redirect
 	{
 		$instance = self::get_instance();
 		$instance->set_location($url);
+	}
+
+
+
+	public static function error( $code = 404 )
+	{
+		echo '<h3>Page Not Found</h3>';
+		exit();
 	}
 }

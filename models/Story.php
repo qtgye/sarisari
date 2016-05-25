@@ -6,20 +6,33 @@ require_once(APP_PATH . '/models/Image.php');
 /**
 * Location Class
 */
-class Location extends Model
+class Story extends Model
 {
 	private $defaults = array(
+		'location_id' => NULL,
+		'thumbnail' => '',
 		'name' => '',
-		'title' => '',
-		'x' => 0,
-		'y' => 0,
+		'address' => '',
+		'profession' => '',
+		'story' => '',
 	);
 
-	private $map = array();
+	public $attributes = array(
+		'location_id' => NULL,
+		'thumbnail' => '',
+		'name' => '',
+		'address' => '',
+		'profession' => '',
+		'story' => '',		
+	); 
 
-	public $table_name = 'locations';
+	private $numbers = array(
+		'location_id'
+	);
 
-	public $types = 'ssdddd';
+	public $table_name = 'stories';
+
+	public $types = 'dsssssdd';
 
 	public $images = array();
 	
@@ -29,30 +42,17 @@ class Location extends Model
 
 		if ( empty($args) ) return;
 
-		$this->map = array(
-			'width' => 531,
-			'height' => 877,
-		);
-
 		$args = array_merge($this->defaults,$args);
-
-		$this->id = is_numeric($args['id']) ? $args['id'] : NULL ;
-		$this->name = $args['name'];
-		$this->title = !empty($args['title']) ? $args['title'] : ucfirst($args['name']);
-
-		// absolute coordinates
-		$this->x = $args['x'];
-		$this->y = $args['y'];
-
-		// relative coordinates
-		$this->pX = (100 * $this->x / $this->map['width']) . '%'; // as in percentage X
-		$this->pY = (100 * $this->y / $this->map['height']) . '%'; // as in percentage Y
+		$this->id = isset($args['id']) ? $args['id'] : NULL ;
 
 		// attributes
-		$this->attributes['name'] = $this->name;
-		$this->attributes['title'] = $this->title;
-		$this->attributes['x'] = $this->x;
-		$this->attributes['y'] = $this->y;
+		foreach ($args as $key => $value) {
+			if ( !array_key_exists($key, $this->attributes) ) continue;
+
+			$value = in_array($key, $this->numbers) ? (int) $value : $value;
+			$this->attributes[$key] = $value;
+			$this->{$key} = $value;
+		}
 
 		// timestamps
 		$this->attributes['created_at'] = time();
@@ -96,8 +96,6 @@ class Location extends Model
 		$result = $result->num_rows > 0 ? $result->fetch_assoc() : NULL;
 		$item = static::create($result);
 
-		$item->stories = static::get_stories($item->id);
-
 		return $item;
 	}
 
@@ -124,38 +122,5 @@ class Location extends Model
 
 		return $items;
 	}
-
-	public static function get_stories($id = NULL)
-	{
-		if ( !is_integer($id) ) return;
-
-		// query stories here
-
-		// temporary
-		return array();
-	}
-
-
-	// public function images()
-	// {
-	// 	$instance = self::get_instance();
-	// 	$table = $instance->table_name;
-	// 	$location_id = $this->id;
-	// 	$images = NULL;
-
-	// 	$result = $this->db->query("SELECT * FROM photos WHERE location_id={$location_id} ORDER BY id DESC");
-
-	// 	if ( !$result || $db->connection->error ) {
-	// 		Log::append($db->connection->error);
-	// 		return NULL;
-	// 	}
-
-	// 	$items = array();
-	// 	while ($item = $result->fetch_assoc()) {
-	// 		array_push($items, static::create($item));
-	// 	}
-
-	// 	return $items;
-	// }
 
 }

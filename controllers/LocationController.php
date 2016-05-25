@@ -14,6 +14,51 @@ class LocationController extends Controller
 	}
 
 
+	public function add ()
+	{
+		$location = Location::create(array());
+
+		$form = Session::get('form');
+		if ( !empty($form) ) {			
+			$location->attributes = array_merge($location->attributes,$form);
+		}
+
+		$this->data['location'] = $location->attributes;
+		$this->data['page'] = 'location';
+		$this->data['method'] = 'create';
+		$this->data['heading'] = 'New Location';
+
+		View::render('admin/page',$this->data);
+	}
+
+
+	public function edit()
+	{
+		$location = Input::get('l');
+
+		if ( !$location ) {
+			redirect('admin');
+		}
+
+		$location = Location::get((int) $location);
+		$location->attributes['id'] = $location->id;
+
+		// Override with form data
+		$form = Session::get('form');
+		if ( !empty($form) ) {			
+			$location->attributes = array_merge($location->attributes,$form);			
+		}
+
+		$this->data['page'] = 'location';
+		$this->data['method'] = 'update';
+		$this->data['heading'] = 'Edit ' . $location->title;
+		$this->data['location'] = $location->attributes;
+		$this->data['stories'] = $location->stories;
+
+		View::render('admin/page',$this->data);
+	}
+
+
 	public function create()
 	{	
 		$post = Input::post();
@@ -35,7 +80,7 @@ class LocationController extends Controller
 			$title = $location->title;
 			Session::delete('form');
 			Session::set('flash',"Successfully added \"{$title}\"");
-			Redirect::to(app_path('admin/edit?l=' . $location->id));			
+			Redirect::to(app_path('admin/location/edit?l=' . $location->id));			
 		}
 	}
 

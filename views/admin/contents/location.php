@@ -1,4 +1,4 @@
-<form class="row" action="<?= app_path('/api/'.$method) ?>" method="post">
+<form class="row" action="<?= app_path('/api/location/'.$method) ?>" method="post">
 
   <?php if (isset($flash)): ?>
     <script>
@@ -80,7 +80,7 @@
 <!-- Stories and Photos-->
 <?php if ( $method == 'update' ): ?>
 
-  <!-- <div class="row">
+  <div class="row">
     <hr>
   </div>
 
@@ -90,67 +90,30 @@
     <h5>Stories</h5> 
     <br>
 
-    <div class="stories_list col s12">
-      
-      
-
+    <div class="stories-list col s12">
+      <?php if ( !empty($stories) ): ?>
+        <?php foreach ($stories as $key => $story): ?>
+          <div class="card">
+            <div class="card-content">
+              <?php echo '<pre style="display: table; font-size: 10px">';
+                var_dump($story);
+              echo '</pre>'; ?>
+            </div>
+          </div>
+        <?php endforeach ?>
+      <?php endif ?>
     </div>
 
 
-  </div>
- -->
-
-
-
-
-
-
-
-
-  <!-- PHOTOS -->
-  
-  <div class="row">
-    <hr>
-  </div>
-  
-  <div class="row">
-    <h5>Photos</h5> 
-    <div class="col 12">
+    <?php if ( count($stories) < 3 ): ?>
       <div class="row">
-        <div class="col m3">
-          
+        <div class="col">
+          <a href="<?= app_path("/admin/story/add/?l={$location['id']}") ?>" class="btn left teal">Add Story</a>
         </div>
-        
-      </div>
-    </div>
-    
+      </div>   
+    <?php endif ?>
 
-    <br>
-    
-
-    <!-- UPLOADS LIST -->
-    <div class="row js-uploads">      
-    </div>
-    <!-- END UPLOADS LIST -->
-
-    <?php include APP_PATH . '/views/admin/partials/upload-item.php' ?>
-
-    <!-- IMAGES LIST -->
-    <div class="js-images">
-    </div>
-    <!-- END IMAGES LIST -->
-
-    <?php include APP_PATH . '/views/admin/partials/image-card.php' ?>
-    <?php include APP_PATH . '/views/admin/partials/image-delete-confirm.php' ?>
-    <?php include APP_PATH . '/views/admin/partials/story-edit.php' ?>
-
-    <div class="row">
-      <div class="col">
-        <label for="upload" class="btn left teal">Add Photos</label>
-      </div>
-    </div>   
-
-    <input id="upload" type="file" name="images[]" data-location="<?= $location['id'] ?>" max="3" multiple hidden class="hide js-upload-input" accept="image/*">
 
   </div>
+
 <?php endif ?>

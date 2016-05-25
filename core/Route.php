@@ -1,5 +1,6 @@
 <?php 
 
+require_once(APP_PATH . '/core/Redirect.php');
 
 /**
 * Route class
@@ -97,15 +98,15 @@ class Route
 		if ( is_readable($controller_file) ) {
 			require_once($controller_file);
 		} else {
-			Log::append('The file <strong>' . $controller_file . '</strong> does not exist.'); exit();
+			Log::append('The file <strong>' . $controller_file . '</strong> does not exist.'); Redirect::error();
 		}
 
 		if ( !class_exists($registerd_route['controller']) ) {
-			Log::append('The Controller file for <strong>'.$registerd_route['controller'].'</strong> does not exist.'); exit();
+			Log::append('The Controller file for <strong>'.$registerd_route['controller'].'</strong> does not exist.'); Redirect::error();
 		}
 
 		if ( !method_exists($registerd_route['controller'], $registerd_route['method']) ) {
-			Log::append('<strong>'.$registerd_route['method'].'</strong> is not a method of class <strong>'.$registerd_route['controller'].'</strong>'); exit();
+			Log::append('<strong>'.$registerd_route['method'].'</strong> is not a method of class <strong>'.$registerd_route['controller'].'</strong>'); Redirect::error();
 		}
 
 		$controller = new $registerd_route['controller'];

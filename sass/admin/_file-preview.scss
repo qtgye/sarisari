@@ -1,0 +1,26 @@
+.file-preview {
+
+
+	.card {
+		display: none;
+	}
+
+	&.has-file {
+		.card {
+			display: block;
+		}
+	}
+}
+
+
+.hide-if-nofile {
+	.file-preview:not(.has-file) & {
+		display: none;
+	}
+}
+
+.show-if-hasfile {
+	.file-preview.has-file & {
+		display: none;
+	}
+}

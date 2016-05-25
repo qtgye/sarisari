@@ -15,7 +15,7 @@
 			<td>Photos Here</td>
 			<td>
 				<div class="right">
-					<a href="<?= app_path('/admin/edit?l='.$location->id) ?>" class="btn btn-floating teal lighten-3"><i class="material-icons">edit</i></a>
+					<a href="<?= app_path('/admin/location/edit?l='.$location->id) ?>" class="btn btn-floating teal lighten-3"><i class="material-icons">edit</i></a>
 					<!-- <a href="#" class="btn btn-floating red lighten-3 delete-modal-trigger"><i class="material-icons">delete</i></a> -->
 				</div>
 			</td>

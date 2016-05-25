@@ -18,7 +18,7 @@
 	<div class="container">
 
 		<div class="row">
-			<nav class="red">
+			<nav>
 			    <div class="nav-wrapper red">
 			      <div class="col"><a href="<?= app_path('/admin') ?>" class="brand-logo">Admin Panel</a></div>
 			      

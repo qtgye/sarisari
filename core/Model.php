@@ -24,7 +24,7 @@ class Model
 
 	public function save ()
 	{
-		$method = isset($this->id) ? 'update' : 'insert';
+		$method = isset($this->id) && !is_null($this->id) ? 'update' : 'insert';
 		$db = Database::get_instance();
 		$values = $this->attributes;
 
