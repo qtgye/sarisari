@@ -41,6 +41,10 @@ class LocationController extends Controller
 		}
 
 		$location = Location::get((int) $location);
+		if ( !$location ) {
+			redirect('admin');
+		}
+
 		$location->attributes['id'] = $location->id;
 
 		// Override with form data

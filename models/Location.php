@@ -1,7 +1,7 @@
 <?php 
 
 require_once(CORE_PATH . '/Model.php');
-require_once(APP_PATH . '/models/Image.php');
+require_once(APP_PATH . '/models/Story.php');
 
 /**
 * Location Class
@@ -94,9 +94,9 @@ class Location extends Model
 		}
 
 		$result = $result->num_rows > 0 ? $result->fetch_assoc() : NULL;
-		$item = static::create($result);
+		$item = self::create($result);
 
-		$item->stories = static::get_stories($item->id);
+		$item->stories = $item->get_stories($item->id);
 
 		return $item;
 	}
@@ -117,22 +117,31 @@ class Location extends Model
 
 		$items = array();
 		while ($item = $result->fetch_assoc()) {
-			$location = static::create($item);
-			$location->images = Image::get_location_images($location->id);
+			$location = self::create($item);
 			array_push($items, $location);
 		}
 
 		return $items;
 	}
 
-	public static function get_stories($id = NULL)
+	public function get_stories()
 	{
-		if ( !is_integer($id) ) return;
+		$db = Database::get_instance();
+		$result = $db->connection->query("SELECT * FROM stories WHERE location_id={$this->id}");
 
-		// query stories here
+		if ( !$result || $db->connection->error ) {
+			Log::append($db->connection->error);
+			return NULL;
+		}
 
-		// temporary
-		return array();
+		$items = array();
+		while ($item = $result->fetch_assoc()) {
+			$story = Story::create($item);
+			array_push($items, $story);
+		}
+
+		return $items;
+
 	}
 
 

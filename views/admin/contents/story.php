@@ -1,5 +1,10 @@
 <div class="row">
-  <a href="<?= app_path("admin/location/edit/?l={$location_id}") ?>" class="grey-text text-lighten-1">< Go Back to Location</a>
+  <a href="<?= app_path("admin/location/edit/?l={$location_id}") ?>" class="grey-text text-lighten-1 left">< Go Back to Location</a>
+  <?php if ( $method == 'update' ): ?>
+    <a href="<?= app_path("admin/story/add/?l={$location_id}") ?>" class="btn btn-small right">
+      <i class="material-icons">add</i> Add Another Story
+    </a>
+  <?php endif ?>
 </div>
 
 <br>
@@ -25,7 +30,8 @@
   
 
   <!-- hidden fields -->
-  <input type="number" name="id" style="display: none;" value="<?= isset($location_id) ? $location_id : '' ?>" hidden>
+  <input type="number" name="id" style="display: none;" value="<?= isset($story['id']) ? $story['id'] : '' ?>" hidden>
+  <input type="number" name="location_id" style="display: none;" value="<?= isset($location_id) ? $location_id : '' ?>" hidden>
 
   <?php if ( isset($heading) ): ?>
     <div class="row">
@@ -52,7 +58,7 @@
         </div>
         <!-- ADDRESS -->
         <div class="input-field col s12">
-          <input id="address" type="text" class="validate" name="Address" value="<?= isset($story['address']) ? $story['address'] : '' ?>" >
+          <input id="address" type="text" class="validate" name="address" value="<?= isset($story['address']) ? $story['address'] : '' ?>" >
           <label for="address">Address</label>
         </div>
         <!-- STORY -->
@@ -132,48 +138,53 @@
 
   <!-- PHOTOS -->
   
-  <div class="row">
-    <hr>
-  </div>
-  
-  <div class="row">
-    <h5>Photos</h5> 
-    <div class="col 12">
-      <div class="row">
-        <div class="col m3">
-          
-        </div>
-        
-      </div>
-    </div>
-    
-
-    <br>
-    
-
-    <!-- UPLOADS LIST -->
-    <div class="row js-uploads">      
-    </div>
-    <!-- END UPLOADS LIST -->
-
-    <?php include APP_PATH . '/views/admin/partials/upload-item.php' ?>
-
-    <!-- IMAGES LIST -->
-    <div class="js-images">
-    </div>
-    <!-- END IMAGES LIST -->
-
-    <?php include APP_PATH . '/views/admin/partials/image-card.php' ?>
-    <?php include APP_PATH . '/views/admin/partials/image-delete-confirm.php' ?>
-    <?php include APP_PATH . '/views/admin/partials/story-edit.php' ?>
+  <?php if ( !empty($story->photos) ): ?>
 
     <div class="row">
-      <div class="col">
-        <label for="upload" class="btn left teal">Add Photos</label>
+      <hr>
+    </div>
+    
+    <div class="row">
+      <h5>Photos</h5> 
+      <div class="col 12">
+        <div class="row">
+          <div class="col m3">
+            
+          </div>
+          
+        </div>
       </div>
-    </div>   
+      
 
-    <input id="upload" type="file" name="images[]" data-location="<?= $location['id'] ?>" max="3" multiple hidden class="hide js-upload-input" accept="image/*">
+      <br>
+      
 
-  </div>
+      <!-- UPLOADS LIST -->
+      <div class="row js-uploads">      
+      </div>
+      <!-- END UPLOADS LIST -->
+
+      <?php include APP_PATH . '/views/admin/partials/upload-item.php' ?>
+
+      <!-- IMAGES LIST -->
+      <div class="js-images">
+      </div>
+      <!-- END IMAGES LIST -->
+
+      <?php include APP_PATH . '/views/admin/partials/image-card.php' ?>
+      <?php include APP_PATH . '/views/admin/partials/image-delete-confirm.php' ?>
+      <?php include APP_PATH . '/views/admin/partials/story-edit.php' ?>
+
+      <div class="row">
+        <div class="col">
+          <label for="upload" class="btn left teal">Add Photos</label>
+        </div>
+      </div>   
+
+      <input id="upload" type="file" name="images[]" data-location="<?= $location['id'] ?>" max="3" multiple hidden class="hide js-upload-input" accept="image/*">
+
+    </div>
+
+  <?php endif ?>
+
 <?php endif ?>

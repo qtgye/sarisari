@@ -92,15 +92,11 @@
 
     <div class="stories-list col s12">
       <?php if ( !empty($stories) ): ?>
-        <?php foreach ($stories as $key => $story): ?>
-          <div class="card">
-            <div class="card-content">
-              <?php echo '<pre style="display: table; font-size: 10px">';
-                var_dump($story);
-              echo '</pre>'; ?>
-            </div>
-          </div>
-        <?php endforeach ?>
+        <?php
+          foreach ($stories as $key => $story) {
+            include APP_PATH . '/views/admin/partials/story-card.php';
+          }
+        ?>
       <?php endif ?>
     </div>
 

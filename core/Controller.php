@@ -2,6 +2,7 @@
 
 require_once(CORE_PATH . '/Input.php');
 require_once(CORE_PATH . '/Session.php');
+require_once(CORE_PATH . '/Database.php');
 
 /**
 * Base Controller Class

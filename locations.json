@@ -1,32 +1,37 @@
 [
 	{
-		"name" 	: "canlubang",
-		"title"	: "Canlubang",
+		"name" 	: "laguna",
+		"title"	: "laguna",
 		"x" 	: 246,
-		"y"		: 375
+		"y"		: 375,
+		"images" : []
 	},
 	{
 		"name" 	: "bacolod",
 		"title"	: "Bacolod",
 		"x" 	: 345,
-		"y"		: 558
+		"y"		: 558,
+		"images" : []
 	},
 	{
 		"name" 	: "cebu",
 		"title"	: "Cebu",
 		"x" 	: 390,
-		"y"		: 585
+		"y"		: 585,
+		"images" : []
 	},
 	{
 		"name" 	: "misamis",
 		"title"	: "Misamis",
 		"x" 	: 432,
-		"y"		: 683
+		"y"		: 683,
+		"images" : []
 	},
 	{
 		"name" 	: "davao",
 		"title" : "Davao",
 		"x" 	: 483,
-		"y"		: 737
+		"y"		: 737,
+		"images" : []
 	}
 ]

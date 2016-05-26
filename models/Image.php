@@ -7,7 +7,7 @@ require_once( APP_PATH . '/core/Model.php' );
 */
 class Image extends Model
 {	
-	public $table_name = 'photos';
+	public $table_name = 'images';
 
 	public $types = 'isssissss';
 
@@ -19,10 +19,6 @@ class Image extends Model
 		'file_name' => '',
 		'file_type' => '',
 		'size' => 0,
-		'name' => '',
-		'address' => '',
-		'profession' => '',
-		'story' => ''
 	);
 
 	private $numbers = array(

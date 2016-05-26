@@ -1,5 +1,4 @@
 <?php 
-
 require_once(CORE_PATH . '/Model.php');
 require_once(APP_PATH . '/models/Image.php');
 
@@ -43,7 +42,7 @@ class Story extends Model
 		if ( empty($args) ) return;
 
 		$args = array_merge($this->defaults,$args);
-		$this->id = isset($args['id']) ? $args['id'] : NULL ;
+		$this->id = is_numeric($args['id']) ? $args['id'] : NULL ;
 
 		// attributes
 		foreach ($args as $key => $value) {
@@ -94,9 +93,8 @@ class Story extends Model
 		}
 
 		$result = $result->num_rows > 0 ? $result->fetch_assoc() : NULL;
-		$item = static::create($result);
 
-		return $item;
+		return $result ? self::create($result) : NULL;
 	}
 
 

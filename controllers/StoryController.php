@@ -38,6 +38,40 @@ class StoryController extends Controller
 	}
 
 
+
+	public function edit()
+	{
+		$story = Input::get('s');
+
+		if ( !$story ) {
+			redirect('admin');
+		}
+
+		$story = Story::get((int) $story);
+		if ( !$story ) {
+			Redirect::back();
+		}
+
+		$story->attributes['id'] = $story->id;
+
+		// Override with form data
+		$form = Session::get('form');
+		if ( !empty($form) ) {			
+			$story->attributes = array_merge($story->attributes,$form);			
+		}
+
+		$this->data['page'] = 'story';
+		$this->data['method'] = 'update';
+		$this->data['heading'] = 'Edit ' . $story->name;
+		$this->data['location_id'] = $story->location_id;
+		$this->data['story'] = $story->attributes;
+		// $this->data['photos'] = $story->photos;
+
+		View::render('admin/page',$this->data);
+	}
+
+
+
 	public function create()
 	{	
 		$post = Input::post();
@@ -46,6 +80,16 @@ class StoryController extends Controller
 
 			$story = Story::create($post);
 			$file = Input::files('file');
+
+			if ( $file ) {
+				$uploaded = Image::upload($files);
+
+				echo '<pre style="display: table; font-size: 10px">';
+					var_dump($uploaded);
+				echo '</pre>';
+			}
+
+			exit();
 
 			$result = $story->save();
 
@@ -61,210 +105,49 @@ class StoryController extends Controller
 			$title = $story->name;
 			Session::delete('form');
 			Session::set('flash',"Successfully added \"{$title}\"");
-			Redirect::to(app_path('admin/story/edit?l=' . $story->id));			
+			Redirect::to(app_path('admin/story/edit?s=' . $story->id));			
 		}
 	}
 
 
-	// public function upload ()
-	// {
-	// 	$files = Input::files();
-	// 	$post = Input::post();
+	public function delete ()
+	{
+		$id = Input::post('id');
 
-	// 	$image = null;
-	// 	$uploaded = FALSE;
-	// 	$response = array(
-	// 		'success' => FALSE,
-	// 		'message' => ''
-	// 	);
+		$response = array(
+			'success' => FALSE,
+			'message' => NULL
+			);
 
-	// 	if ( is_array($files) && count($files) > 0 ) {
-	// 		$uploaded = Image::upload($files['file']);
-	// 	}
-
-	// 	if ( $uploaded ) {
-
-	// 		$response['success'] = TRUE;
-	// 		$response['message'] = 'Upload successful';
-
-	// 		if ( isset($post['location_id']) ) {
-	// 			// CREATING NEW DATA
-	// 			$data = array_merge($uploaded,array('location_id'=>$post['location_id']));
-	// 			$image = Image::create($data);
-
-	// 			if ( $image->save() ) {
-	// 				$response['success'] = true;
-	// 				$response['message'] = 'Successfully saved data';
-	// 	        	$response['data'] = Image::get($image->id);
-	// 	        	unset($response['data']->db);
-	// 			} else {
-	// 				$response['message'] = 'Unable to save item. Please check errorlog for details.';
-	// 			}        	
-	// 		} else if ( isset($post['id']) ) {
-	// 			// REPLACING IMAGE FOR CURRENT DATA
-	// 			$data = $uploaded;
-	// 			$image = Image::get($post['id']);
-	// 			$previous_file = $image->file_name;
-
-	// 			if ( $image->update($data) ) {
-	// 				if ( $image->save($data) ) {
-	// 					$response['success'] = TRUE;
-	// 					$response['message'] = 'Successfully saved data';
-	// 					$response['data'] = $image;
-
-	// 					// Delete previous image
-	// 					unlink(APP_PATH . "/uploads/{$previous_file}");
-
-	// 				} else {
-	// 					$response['success'] = FALSE;
-	// 					$response['message'] = 'Unable to save data';						
-	// 				}					
-	// 			} else {
-	// 				$response['success'] = FALSE;
-	// 				$response['message'] = 'Unable to update data';
-	// 			}
-	// 		}
-        	
- //        } 
-
-	// 	echo json_encode($response);
-	// 	exit();
-	// }
-
-
-	// public function location_images()
-	// {
-	// 	$location_id = Input::post('location_id');
-	// 	$response = array(
-	// 		'success' => FALSE,
-	// 		'items' => array()
-	// 	);
-
-	// 	if ( !isset($location_id) ) {
-	// 		echo '{}';
-	// 		exit();
-	// 	}
-
-	// 	$instance = Image::get_instance();
-	// 	$table = $instance->table_name;
-	// 	$db = Database::get_instance();
-	// 	$images = NULL;
-
-	// 	$result = $db->connection->query("SELECT * FROM photos WHERE location_id={$location_id} ORDER BY id");
-
-	// 	if ( !$result || $db->connection->error ) {
-	// 		Log::append($db->connection->error);
-	// 		return NULL;
-	// 	}
-
-	// 	$items = array();
-	// 	while ($item = $result->fetch_assoc()) {
-	// 		$image = Image::create($item);
-	// 		$image->src = app_path('uploads/'.$image->file_name);
-	// 		array_push($items, $image );
-	// 	}
-
-	// 	$response['success'] = TRUE;
-	// 	$response['items'] = $items;
-
-	// 	echo json_encode($response);
-	// 	exit();
-	// }
-
-
-
-	// public function image_delete()
-	// {
-	// 	$image_id = Input::post('id');
-	// 	$response = array(
-	// 		'success' => FALSE,
-	// 		'message' => array()
-	// 	);
-
-	// 	if ( !isset($image_id) ) {
-	// 		echo json_encode($response);
-	// 		exit();
-	// 	}
-
-	// 	$instance = Image::get_instance();
-	// 	$table = $instance->table_name;
-	// 	$db = Database::get_instance();
-
-	// 	$image = Image::get($image_id);
-
-	// 	if ( $image->delete() ) {
-	// 		unlink(app_path(APP_PATH.'/uploads/'.$image->file_name));
-	// 		$response = array(
-	// 			'success' => TRUE,
-	// 			'items' => 'Successfuly deleted image.'
-	// 		);
-	// 	} else {
-	// 		Log::append(error_get_last());
-	// 		$response['message'] = 'Unable to delete image. Please check errorlog.';
-	// 	}
-
-	// 	echo json_encode($response);
-	// 	exit();
-	// }
-
-
-
-	// public function update()
-	// {
-	// 	$image_id = Input::post('id');
-	// 	$response = array(
-	// 		'success' => FALSE,
-	// 		'message' => array()
-	// 	);
-
-	// 	if ( !isset($image_id) ) {
-	// 		echo json_encode($response);
-	// 		exit();
-	// 	}
-
-	// 	$image = Image::get($image_id);
-	// 	$new_data = Input::post();
-
-	// 	if ( $image->update($new_data) ) {
-	// 		if ( $image->save() ) {
-	// 			$response['success'] = TRUE;
-	// 			$response['message'] = 'Successfully saved data';
-	// 		} else {
-	// 			$response['message'] = 'Unable to save';
-	// 		}
+		if ( !$id ) {
+			$response['message'] = 'Please provide sufficient data.';
+		} else {
+			$story = Story::get($id);
+			if ( !$story ) {
+				$response['message'] = 'Item requested does not exist.';
+			} else {
+				if ( !$story->delete() ) {					
+					$response['message'] = 'Unable to delete item. Please see errorlog for details';
+				} else {
+					$response['success'] = TRUE;
+					$response['message'] = 'Successfully deleted item.';
+				}
+			}
 			
-	// 	} else {
-	// 		$response['message'] = 'Unable to update';
-	// 	}	
+		}
 
-	// 	echo json_encode($response);
-	// 	exit();
-	// }
+		
 
+		
 
+		if ( $story->delete() ) {
 
+		}
 
-	// public function get ()
-	// {
-	// 	$image_id = Input::post('id');
-	// 	$response = array(
-	// 		'success' => FALSE,
-	// 		'message' => ''
-	// 	);
+		$response['success'] = TRUE;		
+		$response['data'] = $story;
 
-	// 	if ( !isset($image_id) ) {
-	// 		echo json_encode($response);
-	// 		exit();
-	// 	}
+		echo json_encode($response);
 
-	// 	$image = Image::get($image_id);
-
-	// 	if ( $image != NULL ) {
-	// 		$response['success'] = TRUE;
-	// 		$response['data'] = $image;
-	// 	}
-
-	// 	echo json_encode($response);
-	// 	exit();
-	// }
+	}
 }

@@ -10,6 +10,8 @@
 <script src="<?= app_path('js/admin/mapper.js') ?>"></script>
 <script src="<?= app_path('js/admin/image.js') ?>"></script>
 <script src="<?= app_path('js/admin/filePreview.js') ?>"></script>
+<script src="<?= app_path('js/admin/confirmModal.js') ?>"></script>
+<script src="<?= app_path('js/admin/story.js') ?>"></script>
 
 </body>
 </html>
