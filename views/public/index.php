@@ -6,6 +6,7 @@
     <title>Sari-Sari Stories</title>
     <link href="<?= app_path('css/public/main.css') ?>" rel="stylesheet">
     <link href="<?= app_path('vendor/custom-popover/css/popover.css') ?>" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Arimo">
 
     <style>
         .marker::after {
@@ -21,7 +22,7 @@
             background-image: url("<?= app_path('assets/close.png') ?>");
         }
         .progress-block {
-            background-image: url("<?= app_path('assets/loader_bg.jpg') ?>");
+            background-image: url("<?= app_path('assets/main-bg.jpg') ?>");
             
         }
     </style>
@@ -52,7 +53,8 @@
                                 <div class="popover-photo-image">
                                     <div class="popover-photo-ratio">
                                         <?php
-                                            $src = !empty($location->images[$key]) ? app_path('/uploads/'.$location->images[$key]->file_name) : app_path('assets/thumbnail.png');
+                                            // $src = !empty($location->images[$key]) ? app_path('/uploads/'.$location->images[$key]->file_name) : app_path('assets/thumbnail.png');
+                                            $src = !empty($location->images[$key]) ? app_path('/assets/'.$location->name.'-'.$location->images[$key].'.jpg') : app_path('assets/thumbnail.png');
                                         ?>
                                         <img class="js-popover" data-popover-group="<?php echo $location->name ?>" src="<?= $src ?>" alt="">                                        
                                     </div>                                   

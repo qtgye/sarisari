@@ -34,7 +34,9 @@ class PageController extends Controller
 						'title' => $location->title,
 						'x' => ( 100 * $location->x / 513 ),
 						'y' => ( 100 * $location->y / 877 ));
-			array_push($this->locations, Location::create($params));
+			$loc = Location::create($params);
+			$loc->images = $location->images;
+			array_push($this->locations, $loc);
 		}
 
 		// $this->locations = Location::all();

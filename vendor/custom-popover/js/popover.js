@@ -39,9 +39,9 @@
         var _modal = {};
 
         var template = '<div class="js-image-popup-modal">' + 
-                            '<div class="popup-overlay"></div>' + 
-                            '<div class="popup-close">RETURN TO MAP <span class="popup-close-icon"></span></div>' + 
+                            '<div class="popup-overlay"></div>' +                             
                             '<div class="popup-dialog">' + 
+                                '<div class="popup-close">RETURN TO MAP <span class="popup-close-icon"></span></div>' + 
                                 '<span class="popup-arrow left">&lt;</span>'+
                                 '<span class="popup-arrow right">&gt;</span>'+
                                 '<div class="popup-content">'+                                     

@@ -1,14 +1,16 @@
 <?php 
 
 require_once(APP_PATH . '/models/Location.php');
+require_once(APP_PATH . '/models/Auth.php');
+
 require_once(CORE_PATH . '/Session.php');
+require_once(CORE_PATH . '/Redirect.php');
 
 /**
 * Admin Controller
 */
 class AdminController extends Controller
-{
-	
+{	
 	function __construct()
 	{
 		parent::__construct();
@@ -18,10 +20,14 @@ class AdminController extends Controller
 
 	public function index()
 	{
-		$this->data['locations'] = Location::all();
+		if ( !Auth::logged_in() ) {
+			Redirect::to(app_path('/login'));
+		}
 
+		$this->data['locations'] = Location::all();
 		View::render('admin/page',$this->data);
 	}
+
 
 	public function add()
 	{
@@ -31,6 +37,7 @@ class AdminController extends Controller
 
 		View::render('admin/page',$this->data);
 	}
+
 
 	public function edit()
 	{

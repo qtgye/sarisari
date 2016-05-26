@@ -30,23 +30,24 @@
 
 .popup-close {
 	position: absolute;
-	top: 20px;
-	right: 20px;
+	top: -70px;
+	right: -50px;
 	vertical-align: middle;
 	z-index: 210;
 	cursor: pointer;
 	color: #fff;
 	line-height: 1.2em;
-	font-family: 'Trebuchet MS', sans-serif;
+	font-family: 'Arimo', sans-serif;
+	font-size: 20px;
 }
 
 .popup-close-icon {
 	display: inline-block;
 	vertical-align: middle;
-	width: 50px;
-	height: 50px;
+	width: 40px;
+	height: 40px;
 	background-size: cover;
-	background-repeat: no-repeat;
+	background-repeat: no-repeat;	
 }
 
 
@@ -78,7 +79,8 @@
 
 	font-family: 'Trebuchet MS', sans-serif;
 	font-size: 0;
-	padding: 0 10px 20px 10px;
+	padding-top: 10px;
+	padding-bottom: 0px;
 }
 
 
@@ -86,25 +88,29 @@
 	display: inline-block;
 	height: 100%;
 	width: 30%;
-	vertical-align: middle;
+	vertical-align: middle;	
 
 	h3 {
-		margin: 5px 0;
+		margin-top: 5px;
+		margin-bottom: 0;
 		color: red;
-		text-transform: uppercase;
+		// text-transform: uppercase;
 		font-weight: lighter;
-		font-size: 22px;
+		font-size: 20px;
+		font-family: 'Arimo', sans-serif;
 	}
 
 	h4 {
-		margin: 5px 0;
+		margin: 0;
 		font-weight: lighter;
-		font-size: 18px;
+		font-size: 15px;
+		font-family: 'Arimo', sans-serif;
 	}
 
 	p {
 		margin: 5px 0;
-		font-size: 14px;
+		font-size: 12px;
+		font-family: 'Arimo', sans-serif;
 	}
 }
 
@@ -114,7 +120,7 @@
 	height: 100%;
 	width: 70%;
 	vertical-align: middle;
-	font-size: 14px;
+	font-size: 11px;
 	padding-left: 10px;
 	box-sizing: border-box;
 }
@@ -124,6 +130,34 @@
 // Overrides
 // ------------------------------------------------------------------------------------
 
-.js-image-popup-modal {
+.js-image-popup-modal.js-image-popup-modal {
 	z-index: 500 !important;
+
+	.popup-dialog {
+		width: 540px !important;
+		padding: 20px !important;
+	}
+
+	.popup-content {
+		margin: 0;
+	}
+
+	img {
+		width: 100%;
+	}
+
+	.popup-arrow {
+		transform: translateY(-117%) !important; 
+		width: 15px !important;
+		opacity: 0.8;
+		top: 53% !important;
+
+		&.left {
+			left: 18px !important;
+		}
+
+		&.right {
+			right: 18px !important;
+		}
+	}
 }

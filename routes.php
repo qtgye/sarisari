@@ -1,6 +1,8 @@
 <?php 
 
 $route->get('/','PageController@index');
+
+$route->get('login','AuthController@login');
 $route->get('admin','AdminController@index');
 
 $route->get('admin/location/add','LocationController@add');
@@ -12,6 +14,8 @@ $route->get('admin/story/edit','StoryController@edit');
 
 // POSTS
 
+$route->post('api/login','AuthController@verify');
+
 $route->post('api/location/create','LocationController@create');
 $route->post('api/location/update','LocationController@update');
 // $route->post('api/delete','LocationController@delete');
@@ -19,8 +23,6 @@ $route->post('api/location/update','LocationController@update');
 $route->post('api/story/create','StoryController@create');
 $route->post('api/story/update','StoryController@update');
 $route->post('api/story/delete','StoryController@delete');
-
-
 
 // $route->post('api/upload','ImageController@upload');
 $route->post('api/upload','ImageController@upload');

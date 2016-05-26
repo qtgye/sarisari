@@ -4,34 +4,47 @@
 		"title"	: "laguna",
 		"x" 	: 246,
 		"y"		: 375,
-		"images" : []
+		"images" : [
+			"carmen",
+			"pepper"
+		]
 	},
 	{
 		"name" 	: "bacolod",
 		"title"	: "Bacolod",
 		"x" 	: 345,
 		"y"		: 558,
-		"images" : []
+		"images" : [
+
+		]
 	},
 	{
 		"name" 	: "cebu",
 		"title"	: "Cebu",
 		"x" 	: 390,
 		"y"		: 585,
-		"images" : []
+		"images" : [
+			"flor",
+			"myrna",
+			"tagala"
+		]
 	},
 	{
 		"name" 	: "misamis",
 		"title"	: "Misamis",
 		"x" 	: 432,
 		"y"		: 683,
-		"images" : []
+		"images" : [
+
+		]
 	},
 	{
 		"name" 	: "davao",
 		"title" : "Davao",
 		"x" 	: 483,
 		"y"		: 737,
-		"images" : []
+		"images" : [
+
+		]
 	}
 ]
