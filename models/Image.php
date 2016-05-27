@@ -9,12 +9,12 @@ class Image extends Model
 {	
 	public $table_name = 'images';
 
-	public $types = 'isssissss';
+	public $types = 'dsssddd';
 
 	public static $instance = NULL;
 
 	private $defaults = array(
-		'location_id' => NULL,
+		'story_id' => NULL,
 		'title' => '',
 		'file_name' => '',
 		'file_type' => '',
@@ -22,7 +22,7 @@ class Image extends Model
 	);
 
 	private $numbers = array(
-		'location_id'
+		'story_id'
 	);
 
 	public function __construct($data = array())
@@ -142,6 +142,37 @@ class Image extends Model
 		$images = NULL;
 
 		$result = $db->connection->query("SELECT * FROM photos WHERE location_id={$location_id} ORDER BY id DESC");
+
+		if ( !$result || $db->connection->error ) {
+			Log::append($db->connection->error);
+			return NULL;
+		}
+
+		$items = array();
+		while ($item = $result->fetch_assoc()) {
+			$image = self::create($item);
+			$image->src = app_path('uploads/'.$image->file_name);
+			array_push($items, $image );
+		}
+
+		return $items;
+	}
+
+
+	public static function get_story_images ($story_id = NULL)
+	{
+		$items = array();
+
+		if ( !isset($story_id) ) {
+			return $items;
+		}
+
+		$instance = self::get_instance();
+
+		$table = $instance->table_name;
+		$db = Database::get_instance();
+
+		$result = $db->connection->query("SELECT * FROM images WHERE story_id={$story_id} ORDER BY id DESC");
 
 		if ( !$result || $db->connection->error ) {
 			Log::append($db->connection->error);

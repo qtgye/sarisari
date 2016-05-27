@@ -11,7 +11,21 @@
 			</div>
 		</div>
 
-		<div class="col s9">
+		<div class="col s1">
+			&nbsp;
+			<?php if ( isset($story->images) && !empty($story->images) ):
+				foreach ( $story->images as $key => $image ) :?>
+					<div class="row">
+						<div class="image-container">
+							<div class="aspect-ratio">
+								<img src="<?= app_path("/uploads/{$story->thumbnail}") ?>" alt="">	
+							</div>
+						</div>
+					</div>
+			<?php endforeach; endif ?>
+		</div>
+
+		<div class="col s8">
 			<p><small>NAME : </small><?= $story->name ?></p>
 		    <p><small>ADDRESS : </small><span><em><?= $story->address ?></em></span></p>
 		    <p><small>PROFESSION : </small><span><em><?= $story->profession ?></em></span></p>

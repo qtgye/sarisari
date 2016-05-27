@@ -25,6 +25,7 @@ class AdminController extends Controller
 		}
 
 		$this->data['locations'] = Location::all();
+
 		View::render('admin/page',$this->data);
 	}
 

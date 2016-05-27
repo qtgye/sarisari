@@ -63,19 +63,17 @@
         </div>
         <!-- STORY -->
         <div class="input-field col s12">
-          <textarea id="story" name="story" class="materialize-textarea validate" value="<?= isset($story['story']) ? $story['story'] : '' ?>" ></textarea>
-          <!-- <input id="story" type="text" class="validate" name="story" value="<?= isset($story['story']) ? $story['story'] : '' ?>" > -->
+          <textarea id="story" name="story" class="materialize-textarea validate" ><?= isset($story['story']) ? $story['story'] : '' ?></textarea>
           <label for="story">Story</label>
         </div>
         <!-- THUMBNAIL -->
-        <div class="col s12 m6 l4 js-file-preview file-preview" data-image="<?= isset($story['thumbnail']) ? $story['thumbnail'] : '' ?>">
-          
+        <div class="col s12 m6 l4 js-file-preview file-preview" data-image="<?= isset($story['thumbnail']) ? app_path('/uploads/'.$story['thumbnail']) : '' ?>">
             <div class="grey-text">Thumbnail</div>
             <div class="card">
               <div class="card-content">
                 <div class="image-container">
                   <div class="aspect-ratio">
-                    <img src="" alt="">
+                    <img src="<?php echo isset($story['thumbnail']) ? app_path('/uploads/'.$story['thumbnail']) : '' ?>" class="file-preview-image">
                   </div>
                 </div>
               </div>
@@ -84,7 +82,7 @@
             <label for="thumbnail" class="btn grey lighten-3 grey-text wave-grey">
               <span class="show-if-hasfile">Select Image</span>
               <span class="hide-if-nofile">Replace Image</span>
-              <input id="thumbnail" type="file" class="hide" name="file" value="<?= isset($story['thumbnail']) ? $story['thumbnail'] : '' ?>">
+              <input id="thumbnail" type="file" class="hide" name="file" value="">
             </label>
           
         </div>
@@ -106,85 +104,54 @@
 </form>
 
 
-<!-- Stories and Photos-->
+<!-- Photos-->
 <?php if ( $method == 'update' ): ?>
 
-  <!-- <div class="row">
+  <div class="row">
     <hr>
   </div>
-
-
-  <div class="row">
-    
-    <h5>Stories</h5> 
-    <br>
-
-    <div class="stories_list col s12">
-      
-      
-
-    </div>
-
-
-  </div>
- -->
-
-
-
-
-
-
-
-
-  <!-- PHOTOS -->
   
-  <?php if ( !empty($story->photos) ): ?>
-
-    <div class="row">
-      <hr>
-    </div>
-    
-    <div class="row">
-      <h5>Photos</h5> 
-      <div class="col 12">
-        <div class="row">
-          <div class="col m3">
-            
-          </div>
+  <div class="row">
+    <h5>Photos</h5> 
+    <div class="col 12">
+      <div class="row">
+        <div class="col m3">
           
         </div>
+        
       </div>
-      
-
-      <br>
-      
-
-      <!-- UPLOADS LIST -->
-      <div class="row js-uploads">      
-      </div>
-      <!-- END UPLOADS LIST -->
-
-      <?php include APP_PATH . '/views/admin/partials/upload-item.php' ?>
-
-      <!-- IMAGES LIST -->
-      <div class="js-images">
-      </div>
-      <!-- END IMAGES LIST -->
-
-      <?php include APP_PATH . '/views/admin/partials/image-card.php' ?>
-      <?php include APP_PATH . '/views/admin/partials/image-delete-confirm.php' ?>
-      <?php include APP_PATH . '/views/admin/partials/story-edit.php' ?>
-
-      <div class="row">
-        <div class="col">
-          <label for="upload" class="btn left teal">Add Photos</label>
-        </div>
-      </div>   
-
-      <input id="upload" type="file" name="images[]" data-location="<?= $location['id'] ?>" max="3" multiple hidden class="hide js-upload-input" accept="image/*">
-
     </div>
+    
 
-  <?php endif ?>
+    <br>
+    
+
+    <!-- UPLOADS LIST -->
+    <div class="row js-uploads">      
+    </div>
+    <!-- END UPLOADS LIST -->
+
+    <?php include APP_PATH . '/views/admin/partials/upload-item.php' ?>
+
+    <!-- IMAGES LIST -->
+    <div class="js-images">
+      <?php if ( !empty($story->images) ):
+        foreach ($story->images as $key => $image): ?>
+          <?php include APP_PATH . '/views/admin/partials/image-card.php' ?>
+        <?php endforeach;
+      endif; ?>
+    </div>
+    <!-- END IMAGES LIST -->
+    
+    <?php include APP_PATH . '/views/admin/partials/image-delete-confirm.php' ?>
+
+    <div class="row">
+      <div class="col">
+        <label for="upload" class="btn left teal">Add Photos</label>
+        <input id="upload" type="file" name="images[]" data-story="<?= $story['id'] ?>" max="3" multiple hidden class="hide js-upload-input" accept="image/*">
+      </div>
+    </div>   
+
+  </div>
 
 <?php endif ?>

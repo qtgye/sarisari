@@ -81,15 +81,14 @@ class StoryController extends Controller
 			$story = Story::create($post);
 			$file = Input::files('file');
 
-			if ( $file ) {
-				$uploaded = Image::upload($files);
+			if ( $file && is_int($file['size']) && $file['size'] > 0 ) {
+				$uploaded = Image::upload($file);
 
-				echo '<pre style="display: table; font-size: 10px">';
-					var_dump($uploaded);
-				echo '</pre>';
+				if ( $uploaded ) {
+					$story->attributes['thumbnail'] = $uploaded['file_name'];
+					$story->thumbnail = $uploaded['file_name'];
+				}				
 			}
-
-			exit();
 
 			$result = $story->save();
 
@@ -105,6 +104,54 @@ class StoryController extends Controller
 			$title = $story->name;
 			Session::delete('form');
 			Session::set('flash',"Successfully added \"{$title}\"");
+			Redirect::to(app_path('admin/story/edit?s=' . $story->id));			
+		}
+	}
+
+	public function update()
+	{	
+		$post = Input::post();
+
+		if ( !$post['id'] ) {
+			Log::append('Missing id from POST.');
+			$error_msg = 'Unable to update item. Please check errorlog for details.';
+			Session::set('error',$error_msg);
+			Session::set('form',$post);
+			Redirect::back();
+		}
+
+		if ( !empty($post) ) {
+
+			$story = Story::get($post['id']);
+			$file = Input::files('file');
+
+			if ( $file && is_int($file['size']) && $file['size'] > 0 ) {
+				$uploaded = Image::upload($file);
+
+				if ( $uploaded ) {
+					$post['thumbnail'] = $uploaded['file_name'];
+				}				
+			}
+
+			if ( array_key_exists('updated_at', $story->attributes) ) {
+				$post['updated_at'] = time();
+			}
+
+			$story->update(array_merge($story->attributes,$post));
+			$result = $story->save();
+
+			if ( !$result ) {
+				// Show error, redirect back
+				$error_msg = 'Unable to save item. Please check errorlog for details.';
+				Session::set('error',$error_msg);
+				Session::set('form',$post);
+				Redirect::back();
+			}
+
+			// else, redirect to edit
+			$title = $story->name;
+			Session::delete('form');
+			Session::set('flash',"Successfully Updated \"{$title}\"");
 			Redirect::to(app_path('admin/story/edit?s=' . $story->id));			
 		}
 	}
@@ -149,5 +196,27 @@ class StoryController extends Controller
 
 		echo json_encode($response);
 
+	}
+
+
+
+	public function images ()
+	{
+		$response = array(
+			'success' => FALSE,
+			'message' => ''
+		);
+		$id = Input::post('story_id');
+
+		if ( !$id ) {
+			$response['message'] = 'Missing post data.';
+			echo json_encode($response); exit();			
+		}
+
+		$images = Image::get_story_images($id);
+
+		$response['images'] = $images;
+
+		echo json_encode($response); exit();			
 	}
 }

@@ -72,6 +72,15 @@ class Database
 		$values = array_values($args);
 		$placeholders = array_map('statement_placeholders', $values);		
 		$query = "INSERT INTO {$table} (". implode(',', $keys) .') VALUES ('. implode(',',$placeholders) .')';
+		echo '<pre style="display: table; font-size: 10px">';
+			var_dump($query);
+		echo '</pre>';
+		echo '<pre style="display: table; font-size: 10px">';
+			var_dump($types);
+		echo '</pre>';
+		echo '<pre style="display: table; font-size: 10px">';
+			var_dump($args);
+		echo '</pre>';
 		$statement = $this->connection->prepare($query);
 
 		if ( !$statement ) {

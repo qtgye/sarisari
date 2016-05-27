@@ -1,5 +1,4 @@
 <?php 
-require_once(CORE_PATH . '/Model.php');
 require_once(APP_PATH . '/models/Image.php');
 
 /**
@@ -44,7 +43,7 @@ class Story extends Model
 		$args = array_merge($this->defaults,$args);
 		$this->id = is_numeric($args['id']) ? $args['id'] : NULL ;
 
-		// attributes
+		// update attributes
 		foreach ($args as $key => $value) {
 			if ( !array_key_exists($key, $this->attributes) ) continue;
 
@@ -54,11 +53,13 @@ class Story extends Model
 		}
 
 		// timestamps
-		$this->attributes['created_at'] = time();
-		$this->attributes['updated_at'] = $this->attributes['created_at'];
-
-		// images
-		// $this->images = $this->images();
+		if ( array_key_exists('created_at', $args) ) {			
+			$this->attributes['created_at'] = (int) $args['created_at'];
+			$this->attributes['updated_at'] = (int) $args['updated_at'];
+		} else {
+			$this->attributes['created_at'] = time();
+			$this->attributes['updated_at'] = $this->attributes['created_at'];
+		}
 	}
 
 
@@ -93,8 +94,13 @@ class Story extends Model
 		}
 
 		$result = $result->num_rows > 0 ? $result->fetch_assoc() : NULL;
+		$story = $result ? self::create($result) : NULL;
 
-		return $result ? self::create($result) : NULL;
+		if ( $story ) {
+			$story->images = Image::get_story_images($story->id);
+		}
+
+		return $story;
 	}
 
 

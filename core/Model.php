@@ -55,6 +55,7 @@ class Model
 
 	public function update($data = array())
 	{
+		// replace with new data
 		foreach ($this->attributes as $key => $value) {
 			if ( array_key_exists($key, $data) ) {
 				$this->attributes[$key] = $data[$key];
@@ -62,6 +63,7 @@ class Model
 			}
 		}
 
+		// verify
 		foreach ($data as $key => $value) {
 			if ( isset($this->attributes[$key]) &&  $this->attributes[$key] != $data[$key] ) {
 				return FALSE;

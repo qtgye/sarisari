@@ -99,7 +99,7 @@ class LocationController extends Controller
 		$location = Location::get($post['id']);
 		if ( !$location ) Redirect::back();
 
-		if ( array_key_exists('updated_at', $location) ) {
+		if ( array_key_exists('updated_at', $location->attributes) ) {
 			$post['updated_at'] = time();
 		}
 

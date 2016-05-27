@@ -23,6 +23,7 @@ $route->post('api/location/update','LocationController@update');
 $route->post('api/story/create','StoryController@create');
 $route->post('api/story/update','StoryController@update');
 $route->post('api/story/delete','StoryController@delete');
+$route->post('api/story/images','StoryController@images');
 
 // $route->post('api/upload','ImageController@upload');
 $route->post('api/upload','ImageController@upload');
