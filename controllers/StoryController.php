@@ -65,7 +65,6 @@ class StoryController extends Controller
 		$this->data['heading'] = 'Edit ' . $story->name;
 		$this->data['location_id'] = $story->location_id;
 		$this->data['story'] = $story->attributes;
-		// $this->data['photos'] = $story->photos;
 
 		View::render('admin/page',$this->data);
 	}
@@ -215,7 +214,8 @@ class StoryController extends Controller
 
 		$images = Image::get_story_images($id);
 
-		$response['images'] = $images;
+		$response['success'] = TRUE;
+		$response['items'] = $images;
 
 		echo json_encode($response); exit();			
 	}

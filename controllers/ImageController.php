@@ -63,46 +63,6 @@ class ImageController extends Controller
 	}
 
 
-	public function location_images()
-	{
-		$location_id = Input::post('location_id');
-		$response = array(
-			'success' => FALSE,
-			'items' => array()
-		);
-
-		if ( !isset($location_id) ) {
-			echo '{}';
-			exit();
-		}
-
-		$instance = Image::get_instance();
-		$table = $instance->table_name;
-		$db = Database::get_instance();
-		$images = NULL;
-
-		$result = $db->connection->query("SELECT * FROM photos WHERE location_id={$location_id} ORDER BY id");
-
-		if ( !$result || $db->connection->error ) {
-			Log::append($db->connection->error);
-			return NULL;
-		}
-
-		$items = array();
-		while ($item = $result->fetch_assoc()) {
-			$image = Image::create($item);
-			$image->src = app_path('uploads/'.$image->file_name);
-			array_push($items, $image );
-		}
-
-		$response['success'] = TRUE;
-		$response['items'] = $items;
-
-		echo json_encode($response);
-		exit();
-	}
-
-
 
 	public function image_delete()
 	{

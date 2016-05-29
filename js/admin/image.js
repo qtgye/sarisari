@@ -23,10 +23,8 @@ $uploadsContainer = $('.js-uploads'),
 $fileUploadTemplate = $('.js-upload-item'),
 
 $imageDeleteConfirm = $('#imageDeleteConfirm'),
-// $storyEditModal = $('#storyEdit'),
 
 currentImage,
-
 images = {};
  	
 
@@ -47,11 +45,7 @@ var Image = function (opts) {
 	
 	var _self = this,
 		defaults = {
-			src 		: '',
-			// name 		: '',
-			// address		: '',
-			// profession 	: '',
-			// story 		: ''
+			src 		: ''
 		},
 		opts = $.extend({},defaults,opts);
 
@@ -73,16 +67,7 @@ var Image = function (opts) {
     _self.guid = guid();
 
 	_self.$element 	    = $imageCardTemplate.clone();
-    // _self.$imgContainer = _self.$element.find('.js-image-container');
 	_self.$img 			= _self.$element.find('.js-image-img');
-	// _self.$info 		= _self.$element.find('.js-image-info').text(_self.info);
-	// _self.$name 		= _self.$info.find('.js-image-name').text(_self.name);
-	// _self.$address 		= _self.$info.find('.js-image-address').text(_self.address);
-	// _self.$profession 	= _self.$info.find('.js-image-profession').text(_self.profession);
-	// _self.$story 		= _self.$info.find('.js-image-story').text(_self.story);
- //    _self.$replaceImageInput  = _self.$element.find('.js-image-replace-input');
- //    _self.$replaceImage = _self.$element.find('.js-image-replace');
-	// _self.$editStory	= _self.$element.find('.js-story-edit');
 	_self.$delete 		= _self.$element.find('.js-image-delete');    
 
     if ( opts.id ) {
@@ -90,14 +75,6 @@ var Image = function (opts) {
     }
 
     _self.$img.attr('src',_self.src);
-    // _self.$name.text(_self.name);
-    // _self.$address.text(_self.address);
-    // _self.$profession.text(_self.profession);
-    // _self.$story.text(_self.story);
-
-    // _self.$replaceImageInput.attr('id',_self.guid);
-    // _self.$replaceImageInput.parent('label').attr('for',_self.guid);
-
 
 
     /*
@@ -118,54 +95,11 @@ var Image = function (opts) {
     }
 
 
-    // function editStory(e) {
-    //     $storyEditModal.find('[name="name"]').val(_self.name);
-    //     $storyEditModal.find('[name="profession"]').val(_self.profession);
-    //     $storyEditModal.find('[name="address"]').val(_self.address);
-    //     $storyEditModal.find('[name="story"]').val(_self.story);
-    //     $storyEditModal.openModal();
-    //     currentImage = _self; 
-    // }    
-
-
-    // function replaceImage() {
-    //     var $input = $(this),
-    //         files = $input[0].files[0],
-    //         formData = new FormData();
-
-    //     _self.$element.addClass('is-loading');
-
-    //     formData.append('file',files);
-    //     formData.append('id',_self.id);
-
-    //     $.ajax({
-    //         url : '/api/upload',
-    //         type : 'POST',
-    //         dataType : 'json',
-    //         data : formData,
-    //         processData : false, // Don't process the files
-    //         contentType : false, // Set content type to false as jQuery will tell the server its a query string request
-    //         success : function (data,status,xhr) {
-    //             _self.$element.removeClass('is-loading');
-    //             if ( data.success ) {
-    //                 _self.src = '/uploads/'+data.data.file_name;
-    //                 _self.$img.attr('src',_self.src);
-    //                 return;
-    //             }
-    //             console.log('Unable to upload file',xhr);                
-    //         },
-    //         error : function (xhr) {
-    //             _self.$element.removeClass('is-loading');
-    //             console.log('Unable to upload file',xhr);  
-    //         }
-
-    //     });
-    // }
-
-
-
     function remove() {
         _self.$element.remove();
+        if ( Object.keys(images).length < 3 ) {
+            enableUpload();
+        }
     }
 
 
@@ -204,17 +138,19 @@ var Image = function (opts) {
     BINDS
      */
 
-    // _self.$edit.on('click',showEdit);
     _self.$delete.on('click',confirmDelete);
-    // _self.$replaceImageInput.on('change',replaceImage);
-    // _self.$editStory.on('click',editStory);   
 
 
     /*
     ADD TO STORE
      */
     images[_self.guid] = _self;
+
+    if ( Object.keys(images).length >= 3 ) {
+        disableUpload();
+    }
 };
+
 
 
 /**
@@ -396,11 +332,6 @@ function bindInput() {
 }
 
 
-// function bindStoryEditModal() {
-//     $storyEditModal.find('.modal-confirm').on('click',updateStory);
-// }
-
-
 function bindImageDeleteModal() {
     var $confirmBtn = $imageDeleteConfirm.find('.modal-confirm');
     $confirmBtn.on('click',function () {
@@ -425,7 +356,6 @@ function onGetImagesError(resp) {
 
 
 function getImages () {
-    // console.log('$input',$input);
     var story_id = $input.data('story');
     if ( !story_id ) return;
     $.ajax({
@@ -438,8 +368,8 @@ function getImages () {
         success : function (data,xhr) {
             if ( data.success ) {
                 // disable photo upload
-                if ( data.items.length == 3 ) {
-                    $input[0].disabled = true;
+                if ( data.items.length >= 3 ) {
+                    disableUpload();
                 }
                 data.items.forEach(function (_item) {
                     var _image = new Image(_item);
@@ -456,45 +386,15 @@ function getImages () {
 }
 
 
-// function updateStory() {
-//     var $form = $storyEditModal.find('form'),
-//         formData = new FormData($form[0]),
-//         dataObject = {};
+function disableUpload() {    
+    $input[0].disabled = true;
+    $('label[for="upload"]').addClass('disabled');
+}
 
-//     formData.append('id',currentImage.id);
-//     currentImage.$element.addClass('is-loading');
-
-//     for (var [key, value] of formData.entries()) { 
-//       dataObject[key] = (key == 'id' ? Number(value) : value);
-//     }
-
-//     $.ajax({
-//         url : '/api/image_update',
-//         dataType : 'json',
-//         type : 'post',
-//         data : dataObject,
-//         success : function (data,message,xhr) {
-//             currentImage.$element.removeClass('is-loading');
-//             if ( data.success ) {
-//                 // Update image card contents
-//                 for ( key in dataObject ) {
-//                     currentImage[key] = dataObject[key];
-//                 }
-//                 currentImage.$name.text(currentImage.name);
-//                 currentImage.$address.text(currentImage.address);
-//                 currentImage.$profession.text(currentImage.profession);
-//                 currentImage.$story.text(currentImage.story);
-//             } else {
-//                 console.warn('Unable to save data',xhr);
-//             }
-//         },
-//         error : function (xhr) {
-//             currentImage.$element.addClass('is-loading');
-//             console.warn('Unable to save data',xhr);
-//         }
-//     });
-// }
-
+function enableUpload() {    
+    $input[0].disabled = false;
+    $('label[for="upload"]').removeClass('disabled');
+}
 
 /**
  * INIT
@@ -502,7 +402,6 @@ function getImages () {
 
 bindInput();
 bindImageDeleteModal();
-// bindStoryEditModal();
 getImages();
 
 

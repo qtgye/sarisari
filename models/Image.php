@@ -127,38 +127,6 @@ class Image extends Model
     }
 
 
-    public static function get_location_images($id = NULL)
-	{
-		$location_id = $id;
-		$items = array();
-
-		if ( !isset($location_id) ) {
-			return $items;
-		}
-
-		$instance = self::get_instance();
-
-		$table = $instance->table_name;
-		$db = Database::get_instance();
-		$images = NULL;
-
-		$result = $db->connection->query("SELECT * FROM photos WHERE location_id={$location_id} ORDER BY id DESC");
-
-		if ( !$result || $db->connection->error ) {
-			Log::append($db->connection->error);
-			return NULL;
-		}
-
-		$items = array();
-		while ($item = $result->fetch_assoc()) {
-			$image = self::create($item);
-			$image->src = app_path('uploads/'.$image->file_name);
-			array_push($items, $image );
-		}
-
-		return $items;
-	}
-
 
 	public static function get_story_images ($story_id = NULL)
 	{

@@ -42,8 +42,6 @@ var FilePreview = function ($el) {
 			newImage = null;
 		}
 
-		console.log('newImage',newImage);
-
 		_self.DOM.$img.attr('src', (newImage ? newImage : _self.originalImage));
 		_self.DOM.$element.toggleClass('has-file',( _self.originalImage || newImage ? true : false));
 	}

@@ -67,7 +67,7 @@
           <label for="story">Story</label>
         </div>
         <!-- THUMBNAIL -->
-        <div class="col s12 m6 l4 js-file-preview file-preview" data-image="<?= isset($story['thumbnail']) ? app_path('/uploads/'.$story['thumbnail']) : '' ?>">
+        <div class="col s12 m6 l4 js-file-preview file-preview" data-image="<?= !empty($story['thumbnail']) ? app_path('/uploads/'.$story['thumbnail']) : '' ?>">
             <div class="grey-text">Thumbnail</div>
             <div class="card">
               <div class="card-content">
@@ -135,7 +135,7 @@
     <?php include APP_PATH . '/views/admin/partials/image-card.php' ?>
 
     <!-- IMAGES LIST -->
-    <div class="js-images"></div>
+    <div class="js-images row"></div>
     <!-- END IMAGES LIST -->
     
     <?php include APP_PATH . '/views/admin/partials/image-delete-confirm.php' ?>
