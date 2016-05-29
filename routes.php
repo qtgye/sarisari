@@ -2,6 +2,9 @@
 
 $route->get('/','PageController@index');
 
+// temp. index:
+// $route->get('/','PageController@temp');
+
 $route->get('login','AuthController@login');
 $route->get('admin','AdminController@index');
 $route->get('logout','AuthController@logout');

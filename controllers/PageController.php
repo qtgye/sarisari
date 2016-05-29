@@ -85,4 +85,48 @@ class PageController extends Controller
 		$this->data['locations'] = $this->locations;
 		View::render('public/index',$this->data);
 	}
+
+
+	public function temp()
+	{
+		/**
+		 * PREPARE FILES TO PRELOAD
+		 */
+
+		$assets = scandir(APP_PATH.'/assets');
+		$uploads = scandir(APP_PATH.'/uploads');
+		$images = array(); 
+
+		// ASSET FILES
+		if ( is_array($assets) ) {
+		    foreach ($assets as $key => $file) {
+		        if ( preg_match('/^[.]+/', $file) ) continue;        
+		        $file_path= APP_PATH.'/assets/'.$file;
+		        $size = filesize($file_path);
+		        $source = app_path('/assets/'.$file);
+		        $type = 'IMAGE';
+		        array_push($images, compact('source','size','type'));
+		    }
+		}
+
+		// UPLOADS
+		if ( is_array($uploads) ) {
+		    foreach ($uploads as $key => $file) {
+		        if ( preg_match('/^[.]+/', $file) ) continue;        
+		        $file_path= APP_PATH.'/uploads/'.$file;
+		        $size = filesize($file_path);
+		        $source = app_path('/uploads/'.$file);
+		        $type = 'IMAGE';
+		        array_push($images, compact('source','size','type'));
+		    }
+		}
+
+		$this->data['preload'] = array(
+		    'files' => $images
+		);
+		$this->data['preload_json'] = json_encode($this->data['preload']);
+
+		$this->data['locations'] = $this->locations;
+		View::render('public/temp',$this->data);
+	}
 }
