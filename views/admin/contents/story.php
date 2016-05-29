@@ -2,7 +2,7 @@
   <a href="<?= app_path("admin/location/edit/?l={$location_id}") ?>" class="grey-text text-lighten-1 left">< Go Back to Location</a>
   <?php if ( $method == 'update' ): ?>
     <a href="<?= app_path("admin/story/add/?l={$location_id}") ?>" class="btn btn-small right">
-      <i class="material-icons">add</i> Add Another Story
+      Add Another Story
     </a>
   <?php endif ?>
 </div>

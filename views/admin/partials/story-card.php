@@ -11,18 +11,18 @@
 			</div>
 		</div>
 
-		<div class="col s1">
-			&nbsp;
+		<div class="col s1">			
 			<?php if ( isset($story->images) && !empty($story->images) ):
 				foreach ( $story->images as $key => $image ) :?>
 					<div class="row">
 						<div class="image-container">
 							<div class="aspect-ratio">
-								<img src="<?= app_path("/uploads/{$story->thumbnail}") ?>" alt="">	
+								<img src="<?= app_path("/uploads/{$image->file_name}") ?>" alt="">	
 							</div>
 						</div>
 					</div>
 			<?php endforeach; endif ?>
+			&nbsp;
 		</div>
 
 		<div class="col s8">

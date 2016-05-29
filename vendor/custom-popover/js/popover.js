@@ -308,12 +308,17 @@
             Modal.show(callbacks);
             _group.setCurrent(currentIndex);
 
-            // Bind modal arrows
-            Modal.DOM.arrows.previous.removeEventListener('click',_group.previous);
-            Modal.DOM.arrows.previous.addEventListener('click',_group.previous);
+            // Remove modal arrows click handler
+            if ( Modal.DOM.arrows.previous.clickHandler ) {
+                Modal.DOM.arrows.previous.removeEventListener('click',Modal.DOM.arrows.previous.clickHandler);
+                Modal.DOM.arrows.next.removeEventListener('click',Modal.DOM.arrows.next.clickHandler);
+            }
 
-            Modal.DOM.arrows.next.removeEventListener('click',_group.next);
-            Modal.DOM.arrows.next.addEventListener('click',_group.next);
+            // Bind arrows
+            Modal.DOM.arrows.previous.clickHandler = _group.previous;            
+            Modal.DOM.arrows.previous.addEventListener('click',Modal.DOM.arrows.previous.clickHandler);
+            Modal.DOM.arrows.next.clickHandler = _group.next;
+            Modal.DOM.arrows.next.addEventListener('click',Modal.DOM.arrows.next.clickHandler);
         }
 
         _group.next = function () {

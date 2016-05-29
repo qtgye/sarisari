@@ -108,7 +108,7 @@ class Location extends Model
 		$instance = static::get_instance();		
 		$table = $instance->table_name;
 
-		$result = $db->connection->query("SELECT * FROM {$table} ORDER BY id DESC");
+		$result = $db->connection->query("SELECT * FROM {$table} ORDER BY id ASC");
 
 		if ( !$result || $db->connection->error ) {
 			Log::append($db->connection->error);
