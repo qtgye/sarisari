@@ -145,7 +145,7 @@
                 _img.style.top = '-9999px';
             } else {
                 // doesnt have src to work on
-                console.log('no src');
+                console.warn('no src');
                 return;
             }
         } else {
@@ -309,7 +309,10 @@
             _group.setCurrent(currentIndex);
 
             // Bind modal arrows
+            Modal.DOM.arrows.previous.removeEventListener('click',_group.previous);
             Modal.DOM.arrows.previous.addEventListener('click',_group.previous);
+
+            Modal.DOM.arrows.next.removeEventListener('click',_group.next);
             Modal.DOM.arrows.next.addEventListener('click',_group.next);
         }
 
@@ -360,7 +363,6 @@
         var images = _d.getElementsByClassName('js-popover');
         [].forEach.call(images,function (image) {
             var _item = new Item(image);
-            // console.log('_item',_item);
         });
     }
 

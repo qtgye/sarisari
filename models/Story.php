@@ -63,6 +63,27 @@ class Story extends Model
 	}
 
 
+	public function get_images()
+	{
+		$db = Database::get_instance();
+		$result = $db->connection->query("SELECT * FROM images WHERE story_id={$this->id}");
+
+		if ( !$result || $db->connection->error ) {
+			Log::append($db->connection->error);
+			return array();
+		}
+
+		$items = array();
+		while ($item = $result->fetch_assoc()) {
+			$image = Image::create($item);
+			array_push($items, $image);
+		}
+
+		$this->images = $items;
+		return $items;
+	}
+
+
 	public static function get_instance ()
 	{
 		if ( NULL == self::$instance ) {

@@ -118,6 +118,7 @@ class Location extends Model
 		$items = array();
 		while ($item = $result->fetch_assoc()) {
 			$location = self::create($item);
+			$location->get_stories();
 			array_push($items, $location);
 		}
 
@@ -137,9 +138,11 @@ class Location extends Model
 		$items = array();
 		while ($item = $result->fetch_assoc()) {
 			$story = Story::create($item);
+			$story->get_images();
 			array_push($items, $story);
 		}
 
+		$this->stories = $items;
 		return $items;
 
 	}

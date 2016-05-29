@@ -49,17 +49,40 @@
                     <div class="popover">
                         <h2><?= $location->title ?></h2>
                         <div class="popover-photos">
-                            <?php foreach (range(0,2) as $key => $photo): ?>
+
+                            <?php
+                            $stories = $location->stories;
+                            foreach ( range(0,2) as $key => $item ) : ?>
                                 <div class="popover-photo-image">
                                     <div class="popover-photo-ratio">
                                         <?php
-                                            // $src = !empty($location->images[$key]) ? app_path('/uploads/'.$location->images[$key]->file_name) : app_path('assets/thumbnail.png');
-                                            $src = !empty($location->images[$key]) ? app_path('/assets/'.$location->name.'-'.$location->images[$key].'.jpg') : app_path('assets/thumbnail.png');
+                                            $src = !empty($stories[$key]) && !empty($stories[$key]->thumbnail) ? app_path('/uploads/'.$stories[$key]->thumbnail) : app_path('assets/thumbnail.png');
                                         ?>
-                                        <img class="js-popover" data-popover-group="<?php echo $location->name ?>" src="<?= $src ?>" alt="">                                        
+                                        <img src="<?= $src ?>" alt="">
+                                        <?php if ( !empty($stories[$key]) && !empty($stories[$key]->images) ): 
+                                            $story = $stories[$key];
+                                            $popover_id = rand(1111111,time());
+                                            foreach ($story->images as $item => $image): ?>
+                                                <img 
+                                                    class="popover-image js-popover" 
+                                                    style="<?= $item == 0 ? 'z-index: 999' : ''; ?>" 
+                                                    data-popover-group="<?= $popover_id ?>" 
+                                                    src="<?= app_path('/uploads/'.$image->file_name) ?>" 
+                                                    alt=""
+
+                                                    data-name="<?= $story->name ?>"                                                    
+                                                    data-address="<?= $story->address ?>"
+                                                    data-profession="<?= $story->profession ?>"
+                                                    data-story="<?= $story->story ?>"
+                                                    >
+                                            <?php
+                                            endforeach;
+                                        endif ?>
+
                                     </div>                                   
                                 </div>            
                             <?php endforeach ?>
+
                         </div>
                     </div>
                 </div>
