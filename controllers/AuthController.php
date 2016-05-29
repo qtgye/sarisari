@@ -25,6 +25,12 @@ class AuthController extends Controller
 		Session::delete('error');
 	}
 
+	public function logout()
+	{
+		Session::delete('logged_in');
+		Redirect::to('/');
+	}
+
 
 	public function verify()
 	{

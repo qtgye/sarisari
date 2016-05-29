@@ -37,9 +37,13 @@ class ImageController extends Controller
 			$response['success'] = TRUE;
 			$response['message'] = 'Upload successful';
 
-			if ( isset($post['location_id']) ) {
+			if ( isset($post['story_id']) ) {
 				// CREATING NEW DATA
-				$data = array_merge($uploaded,array('location_id'=>$post['location_id']));
+				$story_id = (int) $post['story_id'];				
+		        $created_at = time();
+		        $updated_at = $created_at;
+
+				$data = array_merge($uploaded,compact('story_id','created_at','updated_at'));
 				$image = Image::create($data);
 
 				if ( $image->save() ) {
@@ -50,29 +54,6 @@ class ImageController extends Controller
 				} else {
 					$response['message'] = 'Unable to save item. Please check errorlog for details.';
 				}        	
-			} else if ( isset($post['id']) ) {
-				// REPLACING IMAGE FOR CURRENT DATA
-				$data = $uploaded;
-				$image = Image::get($post['id']);
-				$previous_file = $image->file_name;
-
-				if ( $image->update($data) ) {
-					if ( $image->save($data) ) {
-						$response['success'] = TRUE;
-						$response['message'] = 'Successfully saved data';
-						$response['data'] = $image;
-
-						// Delete previous image
-						unlink(APP_PATH . "/uploads/{$previous_file}");
-
-					} else {
-						$response['success'] = FALSE;
-						$response['message'] = 'Unable to save data';						
-					}					
-				} else {
-					$response['success'] = FALSE;
-					$response['message'] = 'Unable to update data';
-				}
 			}
         	
         } 

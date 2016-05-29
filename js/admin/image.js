@@ -214,8 +214,6 @@ var Image = function (opts) {
     ADD TO STORE
      */
     images[_self.guid] = _self;
-
-
 };
 
 
@@ -230,7 +228,7 @@ var FileObject = function (file) {
 
     _file.dataURL = URL.createObjectURL(file);
 
-    _file.location_id   = $input.data('location');
+    _file.story_id   = $input.data('story');
     _file.name          = file.name;
     _file.size          = file.size;
     _file.mimeType      = file.mimeType;
@@ -246,52 +244,24 @@ var FileObject = function (file) {
     // private functions  
 
     function onUploadSuccess (data) {
-        // uploaded++;
-        // requestsCount++;
         _file.isUploadSuccess = true;
         _file.isUploadDone = true;
-        // if ( isFunction(uploadDone) ) uploadDone();
-        // _file.$element.removeClass('is-uploading').addClass('is-success');
-        // console.log('data',data);
-
         data.data.src = data.data.file_name;
-
-        console.log('data',data.data);
 
         _image = new Image(data.data);
         _image.$element.appendTo($imagesContainer).removeClass('hide');
     }
 
     function onUploadError (data) {
-        // request = null;
-        // requestsCount++;
         _file.isUploadDone = true;
-
-        // if ( isFunction(uploadDone) ) uploadDone();
         _file.$element.addClass('is-error');
 
-        // var errorText   = ( data.data && data.data.message ) ?
-        //                   data.data.message :
-        //                   'This file was not uploaded due to an error.';
-
-        // $error.text(errorText);            
         console.warn('The file '+_file.name+' was not uploaded due to an error:', data);       
     }
 
     function onRequestError (xhr) {
-        // request = null;
-        // requestsCount++;
         _file.isUploadDone = true;
-
-        // if ( isFunction(uploadDone) ) uploadDone();
         _file.$element.addClass('is-error');
-
-        // $error.text('This file was not uploaded due to an error.');       
-
-        // if ( xhr.statusText == 'abort' ) {
-        //     $error.text('This file was aborted.');    
-        //     console.warn('The file ' + _file.name + ' was aborted.'); return;
-        // }            
 
         console.warn('The file '+_file.name+' was not uploaded due to an error:', xhr);
     }
@@ -304,7 +274,7 @@ var FileObject = function (file) {
     function upload ( ) {
         var formData = new FormData();
         formData.append('file',_file.originalFile);
-        formData.append('location_id',_file.location_id);
+        formData.append('story_id',_file.story_id);
         request = $.ajax({
             url : '/api/upload',
             type : 'POST',

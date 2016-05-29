@@ -19,6 +19,8 @@ class Image extends Model
 		'file_name' => '',
 		'file_type' => '',
 		'size' => 0,
+		'created_at' => NULL,
+		'updated_at' => NULL,
 	);
 
 	private $numbers = array(
@@ -65,7 +67,8 @@ class Image extends Model
 	public static function upload ($file)
 	{
 		$uploads_dir = APP_PATH . '/uploads/';
-        $uploaded = FALSE;       
+        $uploaded = FALSE;  
+
         $original_file_name = $file['name'];
         $size = $file['size'];   
         $unique = md5($original_file_name . time());
@@ -75,8 +78,6 @@ class Image extends Model
 
         if ( move_uploaded_file($file['tmp_name'], $uploads_dir . $file_name) ) {  
             $uploaded = compact('title','file_name','file_type','size');
-            // $image = self::create($data);
-            // $uploaded = !empty($image) ? $image->save() : FALSE;
         }
 
         return $uploaded;

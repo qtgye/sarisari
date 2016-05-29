@@ -4,6 +4,7 @@ $route->get('/','PageController@index');
 
 $route->get('login','AuthController@login');
 $route->get('admin','AdminController@index');
+$route->get('logout','AuthController@logout');
 
 $route->get('admin/location/add','LocationController@add');
 $route->get('admin/location/edit','LocationController@edit');

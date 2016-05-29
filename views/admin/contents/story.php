@@ -132,15 +132,10 @@
     <!-- END UPLOADS LIST -->
 
     <?php include APP_PATH . '/views/admin/partials/upload-item.php' ?>
+    <?php include APP_PATH . '/views/admin/partials/image-card.php' ?>
 
     <!-- IMAGES LIST -->
-    <div class="js-images">
-      <?php if ( !empty($story->images) ):
-        foreach ($story->images as $key => $image): ?>
-          <?php include APP_PATH . '/views/admin/partials/image-card.php' ?>
-        <?php endforeach;
-      endif; ?>
-    </div>
+    <div class="js-images"></div>
     <!-- END IMAGES LIST -->
     
     <?php include APP_PATH . '/views/admin/partials/image-delete-confirm.php' ?>

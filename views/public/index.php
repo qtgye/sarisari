@@ -81,7 +81,7 @@
     </div>
 </div>
 
-<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script src="<?= app_path('vendor/jquery/dist/jquery.min.js')?>"></script>
 <script src="<?= app_path('vendor/jquery.html5loader/src/jquery.html5Loader.min.js') ?>"></script>
 <script src="<?= app_path('vendor/custom-popover/js/popover.js') ?>"></script>
 <script src="<?= app_path('js/public/app.js') ?>"></script>
